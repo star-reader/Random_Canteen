@@ -59,7 +59,9 @@ const login = (req:Request, res: Response) => {
         if (err) {
             return res.status(500).json({code: 500, msg: 'DatabaseError'})
         }
-        connection.query('SELECT username, canteens, preference FROM users WHERE username = ? AND password = ?', [username, password], (err, results) => {
+        connection.query(
+          'SELECT username, canteens, preference FROM users WHERE username = ? AND password = ?',
+          [username, password], (err, results) => {
             if (err) {
                 connection.release()
             } else if (results.length === 0) {
