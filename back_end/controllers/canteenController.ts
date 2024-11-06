@@ -3,7 +3,7 @@ import { getPool } from '../main'
 import { jwtSign, jwtVerify } from '../services/jwtVerify'
 import { getAuthorizationByHeader, getRandomString } from '../services/Utils'
 import type { MysqlError } from 'mysql'
-import type { Food, JWTPayload, UserHistory } from '../models/types'
+import type { Food, JWTPayload, UserHistory, UserMoment } from '../models/types'
 import randomGetFood from '../services/randomGetFood'
 
 const getAllUsers = (req: Request, res: Response) => {
@@ -129,10 +129,71 @@ const randomMeal = (req: Request, res: Response) => {
     }).catch(e => res.status(401).json({code: 401, msg: 'Unauthorized'}))
 }
 
+// 用于根据食堂名称获取实时情况
+const getDataByCanteen = (req: Request, res: Response) => {
+    const canteen = req.query
+    if (!canteen) return res.status(400).json({code: 400, msg: 'MissingData'})
+    getPool().getConnection((err, connection) => {
+        if (err) {
+            return res.status(500).json({code: 500, msg: 'DatabaseError'})
+        }
+        connection.query('SELECT * FROM foods WHERE canteen = ?', [canteen], (err: MysqlError | null, results: Food[]) => {
+            connection.release()
+            if (err) {
+                return res.status(500).json({code: 500, msg: 'DatabaseError'})
+            }
+            return res.json({code: 200, msg: 'Success', data: results})
+        })
+    })
+}
+
+const getMoments = (req: Request, res: Response) => {
+    jwtVerify(getAuthorizationByHeader(req.headers.authorization)).then(payload => {
+        if (!payload) return res.status(401).json({code: 401, msg: 'Unauthorized'})
+        getPool().getConnection((err, connection) => {
+            if (err) {
+                return res.status(500).json({code: 500, msg: 'DatabaseError'}) 
+            }
+            connection.query('SELECT * FROM moment', (err: MysqlError | null, results: UserMoment[]) => {
+                connection.release()
+                if (err) {
+                    return res.status(500).json({code: 500, msg: 'DatabaseError'}) 
+                }
+                return res.json({code: 200, msg: 'Success', data: results})
+            })
+        })
+    })
+}
+
+const uploadMoments = (req: Request, res: Response) => {
+    jwtVerify(getAuthorizationByHeader(req.headers.authorization)).then(payload => {
+        if (!payload) return res.status(401).json({code: 401, msg: 'Unauthorized'})
+        const { upload } = req.body as {upload: UserMoment}
+        getPool().getConnection((err, connection) => {
+            if (err) {
+                return res.status(500).json({code: 500, msg: 'DatabaseError'})
+            }
+            connection.query(`INSERT INTO moment
+              (username, title, content, picaddress, ranking, time, canteen, tags) VALUES (?, ?)`, 
+              [upload.username, upload.title, upload.content, upload.picaddress ? upload.picaddress : '', upload.ranking, upload.time, upload.canteen, upload.tags],
+            (err: MysqlError | null) => {
+                connection.release()
+                if(err) {
+                    return res.status(500).json({code: 500, msg: 'DatabaseError'})
+                }
+                return res.json({code: 200, msg: 'Success'})
+            })
+        })
+    })
+}
+
 export default{
   getAllUsers,
   testToken,
   register, login,
   getAllFoods,
-  randomMeal
+  randomMeal,
+  getDataByCanteen,
+  getMoments,
+  uploadMoments
 }

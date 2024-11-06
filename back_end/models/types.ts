@@ -35,7 +35,8 @@ type UserMoment = {
     picaddress: string | undefined,
     ranking: number,
     queue: number,
-    tags: string[]
+    tags: string[],
+    time: Date | string
 }
 
 // 自定义的随机规则，如选择最近的食堂、无需排队、优先评分高、不吃已经选过的等
