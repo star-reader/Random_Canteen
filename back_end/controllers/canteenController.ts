@@ -175,7 +175,32 @@ const uploadMoments = (req: Request, res: Response) => {
             }
             connection.query(`INSERT INTO moment
               (username, title, content, picaddress, ranking, time, canteen, tags) VALUES (?, ?)`, 
-              [upload.username, upload.title, upload.content, upload.picaddress ? upload.picaddress : '', upload.ranking, upload.time, upload.canteen, upload.tags],
+              [upload.username, upload.title, upload.content, upload.picaddress ? upload.picaddress : '', 
+                upload.ranking, upload.time, upload.canteen, upload.tags],
+            (err: MysqlError | null) => {
+                connection.release()
+                if(err) {
+                    return res.status(500).json({code: 500, msg: 'DatabaseError'})
+                }
+                return res.json({code: 200, msg: 'Success'})
+            })
+        })
+    })
+}
+
+const updatePreference = (req: Request, res: Response) => {
+    jwtVerify(getAuthorizationByHeader(req.headers.authorization)).then(payload => {
+        if (!payload) return res.status(401).json({code: 401, msg: 'Unauthorized'})
+        const { preference } = req.body as {preference: string[]}
+        if (!preference){
+            return res.status(400).json({code: 400, msg: 'MissingData'})
+        }
+        getPool().getConnection((err, connection) => {
+            if (err) {
+                return res.status(500).json({code: 500, msg: 'DatabaseError'})
+            }
+            connection.query(`UPDATE user SET preference = ? WHERE username = ?`, 
+              [preference, payload.username],
             (err: MysqlError | null) => {
                 connection.release()
                 if(err) {
@@ -188,12 +213,10 @@ const uploadMoments = (req: Request, res: Response) => {
 }
 
 export default{
-  getAllUsers,
-  testToken,
+  getAllUsers, testToken,
   register, login,
-  getAllFoods,
-  randomMeal,
+  getAllFoods, randomMeal,
   getDataByCanteen,
-  getMoments,
-  uploadMoments
+  getMoments, uploadMoments,
+  updatePreference
 }
