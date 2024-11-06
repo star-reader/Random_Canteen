@@ -79,7 +79,7 @@ const login = (req:Request, res: Response) => {
                   'username': username,
                   'jid': getRandomString(16)
                 }
-                jwtSign(password).then(token => res.json({code: 200, msg: 'Success', data: results[0], token}))
+                jwtSign(payload).then(token => res.json({code: 200, msg: 'Success', data: results[0], token}))
                 .catch(_ => res.status(500).json({code: 500, msg: 'JWTError'}))            }
         })
     })
