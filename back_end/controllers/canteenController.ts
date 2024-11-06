@@ -80,7 +80,8 @@ const login = (req:Request, res: Response) => {
                   'jid': getRandomString(16)
                 }
                 jwtSign(payload).then(token => res.json({code: 200, msg: 'Success', data: results[0], token}))
-                .catch(_ => res.status(500).json({code: 500, msg: 'JWTError'}))            }
+                .catch(_ => res.status(500).json({code: 500, msg: 'JWTError'}))
+              }
         })
     })
 }
@@ -119,7 +120,8 @@ const randomMeal = (req: Request, res: Response) => {
                 }
                 //如果selfRoute里有noRecent，则从数据库history中筛选前几次吃过的饭，一并传入随机数选择函数，否则直接进行选择
                 if (selfRule && selfRule.noRecent) {
-                    connection.query('SELECT * FROM history WHERE username = ?', [payload.username], (err: MysqlError | null, history_results: UserHistory[]) => {
+                    connection.query('SELECT * FROM history WHERE username = ?', [payload.username],
+                      (err: MysqlError | null, history_results: UserHistory[]) => {
                         connection.release()
                         if (err) {
                             return res.status(500).json({code: 500, msg: 'DatabaseError'})
@@ -134,7 +136,7 @@ const randomMeal = (req: Request, res: Response) => {
                 }
             })
         })
-    }).catch(e => res.status(401).json({code: 401, msg: 'Unauthorized'}))
+    }).catch(_ => res.status(401).json({code: 401, msg: 'Unauthorized'}))
 }
 
 // 用于根据食堂名称获取实时情况
