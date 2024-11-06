@@ -1,8 +1,8 @@
 import { Request, Response } from 'express'
 import { getPool } from '../main'
-import { jwtSign } from '../services/jwtVerify'
+import { jwtSign, jwtVerify } from '../services/jwtVerify'
 import { JWTPayload } from '../models/types'
-import { getRandomString } from '../services/Utils'
+import { getAuthorizationByHeader, getRandomString } from '../services/Utils'
 
 const getAllUsers = (req: Request, res: Response) => {
   res.send('Getting all users.');
@@ -75,8 +75,47 @@ const login = (req:Request, res: Response) => {
     })
 }
 
+const getAllFoods = (req: Request, res: Response) => {
+    jwtVerify(getAuthorizationByHeader(req.headers.authorization)).then(payload => {
+        if (!payload) return res.status(401).json({code: 401, msg: 'Unauthorized'})
+        getPool().getConnection((err, connection) => {
+            if (err) {
+                return res.status(500).json({code: 500, msg: 'DatabaseError'})
+            }
+            connection.query('SELECT * FROM foods', (err, results) => {
+                connection.release()
+                if (err) {
+                    return res.status(500).json({code: 500, msg: 'DatabaseError'})
+                }
+                return res.json({code: 200, msg: 'Success', data: results})
+            })
+        })
+    }).catch(e => res.status(401).json({code: 401, msg: 'Unauthorized'}))
+    
+}
+
+const randomMeal = (req: Request, res: Response) => {
+    jwtVerify(getAuthorizationByHeader(req.headers.authorization)).then(payload => {
+        if (!payload) return res.status(401).json({code: 401, msg: 'Unauthorized'})
+        getPool().getConnection((err, connection) => {
+            if (err) {
+                return res.status(500).json({code: 500, msg: 'DatabaseError'})
+            }
+            connection.query('SELECT * FROM foods', (err, results) => {
+                connection.release()
+                if (err) {
+                    return res.status(500).json({code: 500, msg: 'DatabaseError'})
+                }
+                
+            })
+        })
+    }).catch(e => res.status(401).json({code: 401, msg: 'Unauthorized'}))
+}
+
 export default{
   getAllUsers,
   testToken,
-  register, login
+  register, login,
+  getAllFoods,
+  randomMeal
 }

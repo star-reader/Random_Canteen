@@ -8,6 +8,16 @@ const getRandomString = (length: number) => {
   return result
 }
 
+const getAuthorizationByHeader = (auth: string | null | undefined) => {
+    if (!auth) return ''
+    try {
+        return auth.split('Bearer ')[1]
+    } catch (error) {
+        return ''
+    }
+}
+
 export {
-    getRandomString
+    getRandomString,
+    getAuthorizationByHeader
 }
