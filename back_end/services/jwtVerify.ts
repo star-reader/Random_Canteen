@@ -3,11 +3,11 @@ import publicKey from "../config/jwt/publicKey"
 import privateKey from "../config/jwt/privateKey"
 import { JWTPayload } from '../models/types';
 
-const jwtVerify = async (token: string | undefined): Promise<Boolean | JWTPayload> => {
-    return new Promise((resolve, _) =>{
-        if (!token) return resolve(false)
+const jwtVerify = async (token: string | undefined): Promise<JWTPayload> => {
+    return new Promise((resolve, reject) =>{
+        if (!token) return reject(false)
         jwt.verify(token, publicKey, (err, decoded) => {
-            if (err) return resolve(false)
+            if (err) return reject(false)
             return resolve(decoded as JWTPayload)
         })
     })

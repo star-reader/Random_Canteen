@@ -1,8 +1,10 @@
 import { Request, Response } from 'express'
 import { getPool } from '../main'
 import { jwtSign, jwtVerify } from '../services/jwtVerify'
-import { JWTPayload } from '../models/types'
 import { getAuthorizationByHeader, getRandomString } from '../services/Utils'
+import type { MysqlError } from 'mysql'
+import type { Food, JWTPayload, UserHistory } from '../models/types'
+import randomGetFood from '../services/randomGetFood'
 
 const getAllUsers = (req: Request, res: Response) => {
   res.send('Getting all users.');
@@ -97,16 +99,31 @@ const getAllFoods = (req: Request, res: Response) => {
 const randomMeal = (req: Request, res: Response) => {
     jwtVerify(getAuthorizationByHeader(req.headers.authorization)).then(payload => {
         if (!payload) return res.status(401).json({code: 401, msg: 'Unauthorized'})
+        const { selfRule } = req.body
         getPool().getConnection((err, connection) => {
             if (err) {
                 return res.status(500).json({code: 500, msg: 'DatabaseError'})
             }
-            connection.query('SELECT * FROM foods', (err, results) => {
-                connection.release()
+            connection.query('SELECT * FROM foods', (err: MysqlError | null, results: Food[]) => {
+                // connection.release()
                 if (err) {
                     return res.status(500).json({code: 500, msg: 'DatabaseError'})
                 }
-                
+                //如果selfRoute里有noRecent，则从数据库history中筛选前几次吃过的饭，一并传入随机数选择函数，否则直接进行选择
+                if (selfRule && selfRule.noRecent) {
+                    connection.query('SELECT * FROM history WHERE username = ?', [payload.username], (err: MysqlError | null, history_results: UserHistory[]) => {
+                        connection.release()
+                        if (err) {
+                            return res.status(500).json({code: 500, msg: 'DatabaseError'})
+                        }
+                        const foods = randomGetFood(results, selfRule, history_results)
+                        return res.json({code: 200, data: foods})
+                    })
+                }else{
+                    connection.release()
+                    const foods = randomGetFood(results, selfRule)
+                    return res.json({code: 200, data: foods})
+                }
             })
         })
     }).catch(e => res.status(401).json({code: 401, msg: 'Unauthorized'}))
