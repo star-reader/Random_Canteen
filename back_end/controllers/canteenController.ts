@@ -64,15 +64,23 @@ const login = (req:Request, res: Response) => {
         connection.query(
           'SELECT username, canteens, preference FROM users WHERE username = ? AND password = ?',
           [username, password], (err, results) => {
+            connection.release()
             if (err) {
-                connection.release()
+                return res.status(500).json({code: 500, msg: 'DatabaseError'})
             } else if (results.length === 0) {
-                connection.release()
                 return res.status(400).json({code: 400, msg: 'UserNotFound'})
             } else {
-                connection.release()
-                return res.json({code: 200, msg: 'Success', data: results[0]})
-            }
+                // 签发JWT
+                const payload: JWTPayload = {
+                  'amr': ['openid', 'name'],
+                  'iss': 'https://api.starjin.top/users',
+                  'aud': 'https://api.starjin.top/users/endpoint',
+                  'scope': ['openid', 'name', 'publicRead', 'publicWrite', 'db'],
+                  'username': username,
+                  'jid': getRandomString(16)
+                }
+                jwtSign(password).then(token => res.json({code: 200, msg: 'Success', data: results[0], token}))
+                .catch(_ => res.status(500).json({code: 500, msg: 'JWTError'}))            }
         })
     })
 }
