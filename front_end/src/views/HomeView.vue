@@ -1,0 +1,8 @@
+<template>
+    <Page />
+</template>
+
+<script lang='ts' setup>
+import Page from '@/components/Food/Index.vue'
+
+</script>
