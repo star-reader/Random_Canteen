@@ -48,6 +48,7 @@ import foodBg from '@/assets/food/food.png'
         font-size: 9.2vw;
         font-weight: bold;
         background-image: linear-gradient(to right, #f4f816, #f5cc18); 
+        background-clip: text;
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         text-align: center;
@@ -79,6 +80,7 @@ import foodBg from '@/assets/food/food.png'
         line-height: $height;
         //background: linear-gradient(to right, #1994f8, #6666ff, #9999ff);
         background: linear-gradient(to right, #051a5c, #1e1d20, #0c0c0c);
+        background-clip: text;
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         font-weight: bold;

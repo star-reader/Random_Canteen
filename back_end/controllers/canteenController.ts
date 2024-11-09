@@ -20,10 +20,11 @@ const testToken = (req: Request, res: Response) => {
   .catch(err => res.status(500).send(err))
 }
 
-const register = (req:Request, res: Response) => {
+const register = (req:Request, res: Response): void => {
     const {username, password} = req.body
     if (!username || !password) {
-        return res.status(400).json({code: 400, msg: 'MissingData'})
+        res.status(400).json({code: 400, msg: 'MissingData'})
+        return
     }
     getPool().getConnection((err, connection) => {
         if (err) {
@@ -52,7 +53,8 @@ const register = (req:Request, res: Response) => {
 const login = (req:Request, res: Response) => {
     const {username, password} = req.body
     if (!username || !password) {
-        return res.status(400).json({code: 400, msg: 'MissingData'})
+        res.status(400).json({code: 400, msg: 'MissingData'})
+        return
     }
     getPool().getConnection((err, connection) => {
         if (err) {
@@ -139,7 +141,10 @@ const randomMeal = (req: Request, res: Response) => {
 // 用于根据食堂名称获取实时情况
 const getDataByCanteen = (req: Request, res: Response) => {
     const canteen = req.query
-    if (!canteen) return res.status(400).json({code: 400, msg: 'MissingData'})
+    if (!canteen){
+        res.status(400).json({code: 400, msg: 'MissingData'})
+        return
+    }
     getPool().getConnection((err, connection) => {
         if (err) {
             return res.status(500).json({code: 500, msg: 'DatabaseError'})
