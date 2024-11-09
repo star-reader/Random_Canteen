@@ -6,9 +6,6 @@ import type { MysqlError } from 'mysql'
 import type { Food, JWTPayload, UserHistory, UserMoment } from '../models/types'
 import randomGetFood from '../services/randomGetFood'
 
-const getAllUsers = (req: Request, res: Response) => {
-  res.send('Getting all users.');
-}
 
 const testToken = (req: Request, res: Response) => {
   const payload: JWTPayload = {
@@ -223,7 +220,7 @@ const updatePreference = (req: Request, res: Response) => {
 }
 
 export default{
-  getAllUsers, testToken,
+  testToken,
   register, login,
   getAllFoods, randomMeal,
   getDataByCanteen,
