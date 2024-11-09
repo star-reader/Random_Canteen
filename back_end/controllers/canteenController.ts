@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
 import { getPool } from '../main'
 import { jwtSign, jwtVerify } from '../services/jwtVerify'
-import { getAuthorizationByHeader, getRandomString } from '../services/Utils'
+import { getAuthorizationByHeader, getRandomString } from '../services/utils'
 import type { MysqlError } from 'mysql'
 import type { Food, JWTPayload, UserHistory, UserMoment } from '../models/types'
 import randomGetFood from '../services/randomGetFood'
