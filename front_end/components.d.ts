@@ -9,8 +9,15 @@ declare module 'vue' {
   export interface GlobalComponents {
     Index: typeof import('./src/components/Food/Index.vue')['default']
     MapContainer: typeof import('./src/components/Map/MapContainer.vue')['default']
+    PreferenceSelector: typeof import('./src/components/Food/PreferenceSelector.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    VanButton: typeof import('vant/es')['Button']
+    VanCell: typeof import('vant/es')['Cell']
+    VanCellGroup: typeof import('vant/es')['CellGroup']
+    VanField: typeof import('vant/es')['Field']
+    VanFloatingPanel: typeof import('vant/es')['FloatingPanel']
+    VanSwitch: typeof import('vant/es')['Switch']
     VanTabbar: typeof import('vant/es')['Tabbar']
     VanTabbarItem: typeof import('vant/es')['TabbarItem']
   }

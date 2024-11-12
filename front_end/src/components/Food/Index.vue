@@ -16,10 +16,13 @@
         <!-- <div class="canva-bg">
             <img :src="foodBg" alt="底部食物">
         </div> -->
+        <PreferenceSelector />
     </div>
 </template>
 
 <script lang='ts' setup>
+import PreferenceSelector from './PreferenceSelector.vue';
+
 import TextBg from '@/assets/food/topBar.png'
 import actionBg from '@/assets/food/actionBar.png'
 import foodBg from '@/assets/food/food.png'
