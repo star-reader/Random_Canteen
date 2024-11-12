@@ -8,6 +8,7 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     Index: typeof import('./src/components/Food/Index.vue')['default']
+    MapContainer: typeof import('./src/components/Map/MapContainer.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     VanTabbar: typeof import('vant/es')['Tabbar']
