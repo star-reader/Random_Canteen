@@ -17,11 +17,13 @@
             <img :src="foodBg" alt="底部食物">
         </div> -->
         <PreferenceSelector />
+        <Result />
     </div>
 </template>
 
 <script lang='ts' setup>
-import PreferenceSelector from './PreferenceSelector.vue';
+import PreferenceSelector from './PreferenceSelector.vue'
+import Result from './Result.vue'
 
 import TextBg from '@/assets/food/topBar.png'
 import actionBg from '@/assets/food/actionBar.png'

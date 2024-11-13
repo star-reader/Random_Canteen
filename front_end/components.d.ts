@@ -10,6 +10,7 @@ declare module 'vue' {
     Index: typeof import('./src/components/Food/Index.vue')['default']
     MapContainer: typeof import('./src/components/Map/MapContainer.vue')['default']
     PreferenceSelector: typeof import('./src/components/Food/PreferenceSelector.vue')['default']
+    Result: typeof import('./src/components/Food/Result.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     VanButton: typeof import('vant/es')['Button']
