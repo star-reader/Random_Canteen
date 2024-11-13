@@ -232,7 +232,46 @@ const updatePreference = (req: Request, res: Response) => {
 }
 
 const uploadHistory = (req: Request, res: Response) => {
-    
+    jwtVerify(getAuthorizationByHeader(req.headers.authorization)).then(payload => {
+        if (!payload) return res.status(401).json({code: 401, msg: 'Unauthorized'})
+        const { history } = req.body as {history: UserHistory}
+        if (!history){
+            return res.status(400).json({code: 400, msg: 'MissingData'})
+        }
+        getPool().getConnection((err, connection) => {
+            if (err) {
+                return res.status(500).json({code: 500, msg: 'DatabaseError'})
+            }
+            connection.query(`INSERT INTO history (time, username, canteen, food_id, ranking) VALUES (?, ?, ?, ?, ?)`, 
+              [history.time, payload.username, history.canteen, history.food_id, history.ranking],
+            (err: MysqlError | null) => {
+                connection.release()
+                if(err) {
+                    return res.status(500).json({code: 500, msg: 'DatabaseError'})
+                }
+                return res.json({code: 200, msg: 'Success'})
+            })
+        })
+    })
+}
+
+const getHistory = (req: Request, res: Response) => {
+    jwtVerify(getAuthorizationByHeader(req.headers.authorization)).then(payload => {
+        if (!payload) return res.status(401).json({code: 401, msg: 'Unauthorized'})
+        getPool().getConnection((err, connection) => {
+            if (err) {
+                return res.status(500).json({code: 500, msg: 'DatabaseError'})
+            }
+            connection.query(`SELECT * FROM history WHERE username = ?`,[payload.username], 
+            (err: MysqlError | null, result: UserHistory[]) => {
+                connection.release()
+                if(err) {
+                    return res.status(500).json({code: 500, msg: 'DatabaseError'})
+                }
+                return res.json({code: 200, msg: 'Success', data: result})
+            })
+        })
+    })
 }
 
 export default{
@@ -241,5 +280,6 @@ export default{
   getAllFoods, randomMeal,
   getDataByCanteen,
   getMoments, uploadMoments,
-  updatePreference
+  updatePreference,
+  uploadHistory, getHistory
 }

@@ -11,5 +11,7 @@ router.get('/getDataByCanteen', userController.getDataByCanteen)
 router.get('/getMoments', userController.getMoments)
 router.post('/uploadMoments', userController.uploadMoments)
 router.post('/updatePreference', userController.updatePreference)
+router.post('/uploadHistory', userController.uploadHistory)
+router.get('/getHistory', userController.getHistory)
 
 export default router

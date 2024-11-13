@@ -49,6 +49,7 @@ type selfRule = {
     noRecent: boolean
 }
 
+
 export type { 
     JWTPayload , Food, UserHistory, UserMoment, selfRule
 }
