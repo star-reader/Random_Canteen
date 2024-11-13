@@ -4,7 +4,7 @@
             <div class="text cute-font">今日食堂盛宴 <br> 等你来选!</div>
             <img :src="TextBg" alt="背景条幅">
         </div>
-        <div class="option-title">
+        <div class="option-title" @click="handlePreference">
             <div class="text">换个口味？点我更改喜好→</div>
             <img :src="actionBg" alt="选择按钮背景">
         </div>
@@ -22,12 +22,17 @@
 </template>
 
 <script lang='ts' setup>
+import pubsub from 'pubsub-js'
 import PreferenceSelector from './PreferenceSelector.vue'
 import Result from './Result.vue'
 
 import TextBg from '@/assets/food/topBar.png'
 import actionBg from '@/assets/food/actionBar.png'
 import foodBg from '@/assets/food/food.png'
+
+const handlePreference = () => {
+    pubsub.publish('open-selector', 1)
+}
 
 </script>
 

@@ -1,9 +1,14 @@
 <template>
     <div class="preference-selector">
-        <van-floating-panel>
+        <van-floating-panel v-model:height="height" :anchors="anchors">
             <van-field name="switch" label="距离优先">
                 <template #input>
                     <van-switch v-model="selection.nearest" />
+                </template>
+            </van-field>
+            <van-field name="switch" label="不吃本区">
+                <template #input>
+                    <van-switch v-model="selection.noCurrent" />
                 </template>
             </van-field>
             <van-field name="switch" label="避开拥堵">
@@ -36,13 +41,27 @@
 </template>
 
 <script lang='ts' setup>
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
+import pubsub from 'pubsub-js'
 
 const selection = ref({
     nearest: false,
+    noCurrent: false,
     queue: false,
     ranking: false,
     noRecent: false
+})
+
+// 自定义的面板高度
+const anchors = [
+    0,
+    480
+]
+const height = ref(anchors[0])
+
+onMounted(() => {
+    // 打开面板
+    pubsub.subscribe('open-selector',() => height.value = anchors[1])
 })
 
 </script>

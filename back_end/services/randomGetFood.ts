@@ -7,6 +7,9 @@ export default (food: Food[], selfRule: selfRule , history?: UserHistory[]) => {
             // 从最近的食堂中筛选
             filteredFood = food.filter(item => item.canteen === selfRule.nearest)
         }
+        if (selfRule.noCurrent){
+            filteredFood = food.filter(item => item.canteen !== selfRule.noCurrent)
+        }
         if (selfRule.queue){
             filteredFood = filteredFood.sort((a, b) => a.queue - b.queue)
         }
@@ -27,7 +30,7 @@ export default (food: Food[], selfRule: selfRule , history?: UserHistory[]) => {
             return filteredFood[Math.floor(Math.random() * 10)]
         }
     }else{
-        return food[Math.floor(Math.random() * filteredFood.length)]
+        filteredFood = food
     }
-    
+    return filteredFood[Math.floor(Math.random() * filteredFood.length)]
 }
