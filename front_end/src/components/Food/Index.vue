@@ -8,7 +8,7 @@
             <div class="text">换个口味？点我更改喜好→</div>
             <img :src="actionBg" alt="选择按钮背景">
         </div>
-        <div class="action-button">
+        <div class="action-button" @click="handleOpenResult">
             <div class="text-area">
                 选择
             </div>
@@ -32,6 +32,10 @@ import actionBg from '@/assets/food/actionBar.png'
 
 const handlePreference = () => {
     pubsub.publish('open-selector', 1)
+}
+
+const handleOpenResult = () => {
+    pubsub.publish('open-result', 1)
 }
 
 </script>

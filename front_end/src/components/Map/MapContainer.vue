@@ -16,7 +16,7 @@
 </template>
 
 <script setup>
-import { onMounted, onUnmounted, ref } from "vue";
+import { nextTick, onMounted, onUnmounted, ref } from "vue";
 import AMapLoader from "@amap/amap-jsapi-loader";
 import useInfoWindow from "@/hooks/canteen/useInfoWindow";
 
@@ -41,113 +41,118 @@ const loadMapAndConfigs = () => {
   });
 }
 
+
 onMounted(() => {
-  loadMapAndConfigs()
-  .then((AMap) => {
-      map = new AMap.Map("container", {
-        viewMode: "2D",
-        zoom: 17,
-        center: [113.357583, 23.15765],
-      })
 
-      map.setZooms([16, 19]);
+  nextTick(() => {
+    loadMapAndConfigs()
+    .then((AMap) => {
+        map = new AMap.Map("container", {
+          viewMode: "2D",
+          zoom: 17,
+          center: [113.357583, 23.15765],
+        })
 
-      const lockMapBounds = () => {
-        let bounds = new AMap.Bounds(
-          113.378906,
-          23.168838,
-          113.344119,
-          23.14629
-        );
-        map.setLimitBounds(bounds);
-      };
-      lockMapBounds();
+        map.setZooms([16, 19]);
 
-      // 定位
-      AMap.plugin("AMap.Geolocation", () => {
-        let geolocation = new AMap.Geolocation({
-          enableHighAccuracy: true,
-          timeout: 10000,
-          buttonposition: "RB",
-          offset: [10, 20],
-          zoomToAccuracy: true,
-        });
+        const lockMapBounds = () => {
+          let bounds = new AMap.Bounds(
+            113.378906,
+            23.168838,
+            113.344119,
+            23.14629
+          );
+          map.setLimitBounds(bounds);
+        };
+        lockMapBounds();
 
-        map.addControl(geolocation);
-        geolocation.getCurrentPosition((status, result) => {
-          if (status == "complete") {
-            const LngLatList = [
-              [113.366028, 23.153604],
-              [113.354986, 23.156229],
-              [113.347286, 23.161231],
-              [113.357213, 23.163316],
-              [113.367758, 23.160487],
-              [113.370245, 23.163324],
-            ]
+        // 定位
+        AMap.plugin("AMap.Geolocation", () => {
+          let geolocation = new AMap.Geolocation({
+            enableHighAccuracy: true,
+            timeout: 10000,
+            buttonposition: "RB",
+            offset: [10, 20],
+            zoomToAccuracy: true,
+          });
 
-            for (let i = 0; i < 6; i++) {
-              const dis = AMap.GeometryUtil.distance(result.position, [
-                LngLatList[i][0],
-                LngLatList[i][1],
-              ])
-              const result00 = Math.round(dis * 100) / 100
-              distanceList.value[i].number = result00
+          map.addControl(geolocation);
+          geolocation.getCurrentPosition((status, result) => {
+            if (status == "complete") {
+              const LngLatList = [
+                [113.366028, 23.153604],
+                [113.354986, 23.156229],
+                [113.347286, 23.161231],
+                [113.357213, 23.163316],
+                [113.367758, 23.160487],
+                [113.370245, 23.163324],
+              ]
+
+              for (let i = 0; i < 6; i++) {
+                const dis = AMap.GeometryUtil.distance(result.position, [
+                  LngLatList[i][0],
+                  LngLatList[i][1],
+                ])
+                const result00 = Math.round(dis * 100) / 100
+                distanceList.value[i].number = result00
+              }
+              distanceList.value.sort((a, b) => a.number - b.number)
+              globalDistanceList = distanceList.value.slice()
+
+              // 芷园
+              useInfoWindow(
+                  map, AMap, new AMap.LngLat(113.366028, 23.153604), 
+                  "芷园", 'zo',
+                  globalDistanceList, 
+                  `<img src='http://tpc.googlesyndication.com/simgad/5843493769827749134'>地址：广州市天河区五山路483号华南农业大学紫荆路(近游泳池)`,
+                  "13798079072"
+              )
+              // 绿榕园
+              useInfoWindow(
+                  map, AMap, new AMap.LngLat(113.354986, 23.156229), 
+                  "绿榕园", 'lro',
+                  globalDistanceList,
+                  "<img src='http://tpc.googlesyndication.com/simgad/5843493769827749134'>地址：广州市天河区五山街五山路483号华南农业大学内"
+              )
+              // 莘园
+              useInfoWindow(
+                  map, AMap, new AMap.LngLat(113.357213, 23.163316), 
+                  "莘园", 'xo',
+                  globalDistanceList,
+                  "<img src='http://tpc.googlesyndication.com/simgad/5843493769827749134'>地址：广州市天河区五山街道五山路483号华南农业大学六一区",
+                  "020-85283177"
+              )
+              // 西园
+              useInfoWindow(
+                  map, AMap, new AMap.LngLat(113.347286, 23.161231),
+                  "西园", 'co',
+                  globalDistanceList,
+                  "<img src='http://tpc.googlesyndication.com/simgad/5843493769827749134'>地址：广州市天河区五山街道五山路483号华南农业大学花枝路",
+                  "020-85280769"
+              )
+              // 荷园
+              useInfoWindow(
+                  map, AMap, new AMap.LngLat(113.367758, 23.160487),
+                  "荷园", 'ho', globalDistanceList,
+                  "<img src='http://tpc.googlesyndication.com/simgad/5843493769827749134'>地址：广州市天河区五山路483号(华南农业大学启林南区,近第五教学楼)",
+              )
+              // 稻香园
+              useInfoWindow(
+                  map, AMap, new AMap.LngLat(113.370245, 23.163324),
+                  "稻香园", 'dxo', globalDistanceList,
+                  "<img src='http://tpc.googlesyndication.com/simgad/5843493769827749134'>地址：广州市天河区五山路483号华南农业大学启林北区",
+              )
+            } else {
+              onError(result);
             }
-            distanceList.value.sort((a, b) => a.number - b.number)
-            globalDistanceList = distanceList.value.slice()
-
-            // 芷园
-            useInfoWindow(
-                map, AMap, new AMap.LngLat(113.366028, 23.153604), 
-                "芷园", 'zo',
-                globalDistanceList, 
-                `<img src='http://tpc.googlesyndication.com/simgad/5843493769827749134'>地址：广州市天河区五山路483号华南农业大学紫荆路(近游泳池)`,
-                "13798079072"
-            )
-            // 绿榕园
-            useInfoWindow(
-                map, AMap, new AMap.LngLat(113.354986, 23.156229), 
-                "绿榕园", 'lro',
-                globalDistanceList,
-                "<img src='http://tpc.googlesyndication.com/simgad/5843493769827749134'>地址：广州市天河区五山街五山路483号华南农业大学内"
-            )
-            // 莘园
-            useInfoWindow(
-                map, AMap, new AMap.LngLat(113.357213, 23.163316), 
-                "莘园", 'xo',
-                globalDistanceList,
-                "<img src='http://tpc.googlesyndication.com/simgad/5843493769827749134'>地址：广州市天河区五山街道五山路483号华南农业大学六一区",
-                "020-85283177"
-            )
-            // 西园
-            useInfoWindow(
-                map, AMap, new AMap.LngLat(113.347286, 23.161231),
-                "西园", 'co',
-                globalDistanceList,
-                "<img src='http://tpc.googlesyndication.com/simgad/5843493769827749134'>地址：广州市天河区五山街道五山路483号华南农业大学花枝路",
-                "020-85280769"
-            )
-            // 荷园
-            useInfoWindow(
-                map, AMap, new AMap.LngLat(113.367758, 23.160487),
-                "荷园", 'ho', globalDistanceList,
-                "<img src='http://tpc.googlesyndication.com/simgad/5843493769827749134'>地址：广州市天河区五山路483号(华南农业大学启林南区,近第五教学楼)",
-            )
-            // 稻香园
-            useInfoWindow(
-                map, AMap, new AMap.LngLat(113.370245, 23.163324),
-                "稻香园", 'dxo', globalDistanceList,
-                "<img src='http://tpc.googlesyndication.com/simgad/5843493769827749134'>地址：广州市天河区五山路483号华南农业大学启林北区",
-            )
-          } else {
-            onError(result);
-          }
+          });
         });
+      })
+    .catch((e) => {
+        console.log(e);
       });
-    })
-   .catch((e) => {
-      console.log(e);
-    });
+  })
+
 });
 
 onUnmounted(() => {

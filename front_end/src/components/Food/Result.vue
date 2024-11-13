@@ -1,5 +1,5 @@
 <template>
-    <div class="page-wrapper result-panel">
+    <div class="page-wrapper result-panel" v-if="isShow">
         <div class="top-pic-frame">
             <img :src="topFoodPic" alt="顶部食物图片">
         </div>
@@ -59,11 +59,13 @@
 </template>
 
 <script lang='ts' setup>
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
+import pubsub from 'pubsub-js'
 import topFoodPic from '@/assets/result/topFood.png'
 import testPic from '@/assets/test/food.png'
 import usagiPic from '@/assets/result/usagi.jpg'
 
+const isShow = ref(false)
 const showUsagi = ref(false)
 const ranking = ref(1)
 const queue = ref(3)
@@ -71,6 +73,10 @@ const queue = ref(3)
 const handleConform = () => {
     showUsagi.value = true
 }
+
+onMounted(() => {
+    pubsub.subscribe('open-result',() => isShow.value = true)
+})
 
 </script>
 

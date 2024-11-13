@@ -27,7 +27,7 @@
                 </template>
             </van-field>
             <div style="margin: 16px;font-size: 18px">
-                <van-button round block type="primary" native-type="submit">
+                <van-button round block type="primary" native-type="submit" @click="onConform">
                 确定
                 </van-button>
             </div>
@@ -58,6 +58,10 @@ const anchors = [
     405
 ]
 const height = ref(anchors[0])
+
+const onConform = () => {
+    height.value = anchors[0]
+}
 
 onMounted(() => {
     // 打开面板

@@ -231,6 +231,10 @@ const updatePreference = (req: Request, res: Response) => {
     })
 }
 
+const uploadHistory = (req: Request, res: Response) => {
+    
+}
+
 export default{
   testToken,
   register, login,
