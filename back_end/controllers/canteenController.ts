@@ -5,6 +5,7 @@ import { getAuthorizationByHeader, getRandomString } from '../services/utils'
 import type { MysqlError } from 'mysql'
 import type { Food, JWTPayload, UserHistory, UserMoment } from '../models/types'
 import randomGetFood from '../services/randomGetFood'
+import { dataEncrypt } from '../services/crypto'
 
 
 const testToken = (req: Request, res: Response) => {
@@ -39,7 +40,8 @@ const register = (req:Request, res: Response): void => {
                 connection.release()
                 return res.status(400).json({code: 400, msg: 'UserExists'})
             }
-            connection.query('INSERT INTO users (username, password) VALUES (?, ?)', [username, password],( err, results) => {
+            // 对密码加密
+            connection.query('INSERT INTO users (username, password) VALUES (?, ?)', [username, password],(err) => {
                 connection.release()
                 if (err) {
                     return res.status(500).json({code: 500, msg: 'DatabaseError'})
@@ -140,7 +142,7 @@ const randomMeal = (req: Request, res: Response) => {
 
 // 用于根据食堂名称获取实时情况
 const getDataByCanteen = (req: Request, res: Response) => {
-    const canteen = req.query
+    const canteen = req.query.canteen
     if (!canteen){
         res.status(400).json({code: 400, msg: 'MissingData'})
         return
@@ -181,17 +183,22 @@ const uploadMoments = (req: Request, res: Response) => {
     jwtVerify(getAuthorizationByHeader(req.headers.authorization)).then(payload => {
         if (!payload) return res.status(401).json({code: 401, msg: 'Unauthorized'})
         const { upload } = req.body as {upload: UserMoment}
+        if (!upload || Object.keys(upload).length === 0){
+            res.status(400).json({code: 400, msg: 'MissingData'})
+            return
+        }
         getPool().getConnection((err, connection) => {
             if (err) {
                 return res.status(500).json({code: 500, msg: 'DatabaseError'})
             }
             connection.query(`INSERT INTO moment
-              (username, title, content, picaddress, ranking, time, canteen, tags) VALUES (?, ?)`, 
-              [upload.username, upload.title, upload.content, upload.picaddress ? upload.picaddress : '', 
-                upload.ranking, upload.time, upload.canteen, upload.tags],
+              (username,food_id, title, content, picaddress, ranking, queue, time, canteen, tags) VALUES (?, ?,?, ?, ?, ?, ?, ?, ?,?)`, 
+              [payload.username,upload.food_id, upload.title, upload.content, upload.picaddress ? upload.picaddress : '', 
+                upload.ranking,upload.queue, upload.time, upload.canteen, upload.tags],
             (err: MysqlError | null) => {
                 connection.release()
                 if(err) {
+                    console.log(err)
                     return res.status(500).json({code: 500, msg: 'DatabaseError'})
                 }
                 return res.json({code: 200, msg: 'Success'})

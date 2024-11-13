@@ -1,6 +1,7 @@
 type Food = {
     id: number,
     canteen: string,
+    name: string,
     tag: string,
     ranking: number,
     queue: number,
