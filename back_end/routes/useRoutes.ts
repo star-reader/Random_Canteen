@@ -9,7 +9,7 @@ router.post('/login', userController.login)
 router.post('/ranndomMeal', userController.randomMeal)
 router.get('/getDataByCanteen', userController.getDataByCanteen)
 router.get('/getMonents', userController.getMoments)
-
+router.post('/uploadMoments', userController.uploadMoments)
 router.post('/updatePreference', userController.updatePreference)
 
 export default router
