@@ -1,7 +1,11 @@
 <template>
     <NavigationTabBar />
 
-    <router-view />
+    <router-view v-slot="{ Component }">
+        <KeepAlive>
+            <component :is="Component" :key="$route.name" />
+        </KeepAlive>
+    </router-view>
 </template>
 
 <script lang='ts' setup>
