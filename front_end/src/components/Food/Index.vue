@@ -28,7 +28,7 @@ import Result from './Result.vue'
 
 import TextBg from '@/assets/food/topBar.png'
 import actionBg from '@/assets/food/actionBar.png'
-import foodBg from '@/assets/food/food.png'
+// import foodBg from '@/assets/food/food.png'
 
 const handlePreference = () => {
     pubsub.publish('open-selector', 1)
@@ -44,6 +44,7 @@ const handlePreference = () => {
     background-position-x: left;
     background-position-y: top;
     transition: background 1s ease-in-out;
+    z-index: 18;
 }
 .main-title{
     position: relative;
@@ -57,7 +58,7 @@ const handlePreference = () => {
         line-height: 55px;
         font-size: 9.2vw;
         font-weight: bold;
-        background-image: linear-gradient(to right, #f4f816, #f5cc18); 
+        background-image: linear-gradient(to right, #f6fa27, #f5cc15); 
         background-clip: text;
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
