@@ -31,11 +31,11 @@
                 确定
                 </van-button>
             </div>
-            <div style="margin: 16px;font-size: 18px">
+            <!-- <div style="margin: 16px;font-size: 18px">
                 <van-button round block type="warning" color="rgb(253 14 113)" native-type="submit">
                 取消
                 </van-button>
-            </div>
+            </div> -->
         </van-floating-panel>
     </div>
 </template>
@@ -55,7 +55,7 @@ const selection = ref({
 // 自定义的面板高度
 const anchors = [
     0,
-    480
+    405
 ]
 const height = ref(anchors[0])
 
