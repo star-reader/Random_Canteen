@@ -5,8 +5,8 @@
         </div>
         <div class="main-frame">
             <div class="content-area">
-                <div class="main-name">芷园</div>
-                <div class="sub-name">二楼自选</div>
+                <div class="main-name">西园</div>
+                <div class="sub-name">二楼自助炒饭</div>
             </div>
             <div class="pic-area">
                 <img :src="testPic" alt="食物配图">
