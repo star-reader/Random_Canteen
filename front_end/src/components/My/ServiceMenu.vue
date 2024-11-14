@@ -3,13 +3,13 @@
         <ul>
             <li>
                 <a href="#">
-                    <img src="../assets/food/退出登陆.png" alt="退出登录图标">
+                    <img src="../../assets/my/退出登陆.png" alt="退出登录图标">
                     <span>退出登录 ></span>
                 </a>
             </li>
             <li>
                 <a href="#">
-                    <img src="../assets/food/回到桌面.png" alt="回到桌面图标">
+                    <img src="../../assets/my/回到桌面.png" alt="回到桌面图标">
                     <span>回到桌面 ></span>
                 </a>
             </li>
