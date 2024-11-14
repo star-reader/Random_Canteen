@@ -1,7 +1,7 @@
 <template>
     <div class="background">
         <div class="profile">
-            <img src="../assets/food/pageBackground.jpg" class="head-portrait" alt="User Profile Picture">
+            <img src="../../assets/my/profileheader.jpg" class="head-portrait" alt="User Profile Picture">
             <div class="name">用户名</div> <!-- 添加用户名 -->
         </div>
     </div>
@@ -11,7 +11,7 @@
 .background {
     width: 100%; 
     height: 25vh; 
-    background-image: url('../assets/food/backgound.jpg'); 
+    background-image: url('../../assets/my/backgound.jpg'); 
     background-size: cover; 
     background-position: center; 
     display: flex; 
