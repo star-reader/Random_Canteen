@@ -313,7 +313,7 @@ const getHistory = (req: Request, res: Response) => {
     })
 }
 
-export default{
+export default {
   testToken,
   register, login,
   getAllFoods, randomMeal,
