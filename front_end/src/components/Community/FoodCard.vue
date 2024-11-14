@@ -7,8 +7,8 @@
                     <div class="avatar">
                         <van-image
                             round
-                            width="22px"
-                            height="22px"
+                            width="26px"
+                            height="26px"
                             src="https://fastly.jsdelivr.net/npm/@vant/assets/cat.jpeg"
                         />
                     </div>
@@ -54,7 +54,6 @@
                     </div>
                 </div>
             </div>
-            
         </div>
     </div>
 </template>
