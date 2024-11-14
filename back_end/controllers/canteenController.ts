@@ -142,22 +142,22 @@ const randomMeal = (req: Request, res: Response) => {
 
 // 用于根据食堂名称获取实时情况
 const getDataByCanteen = (req: Request, res: Response) => {
-    const canteen = req.query.canteen
-    if (!canteen){
-        res.status(400).json({code: 400, msg: 'MissingData'})
-        return
-    }
-    getPool().getConnection((err, connection) => {
-        if (err) {
-            return res.status(500).json({code: 500, msg: 'DatabaseError'})
-        }
-        connection.query('SELECT * FROM foods WHERE canteen = ?', [canteen], (err: MysqlError | null, results: Food[]) => {
-            connection.release()
+    jwtVerify(getAuthorizationByHeader(req.headers.authorization)).then(payload => {
+        if (!payload) return res.status(401).json({code: 401, msg: 'Unauthorized'})
+        getPool().getConnection((err, connection) => {
             if (err) {
-                return res.status(500).json({code: 500, msg: 'DatabaseError'})
+                return res.status(500).json({code: 500, msg: 'DatabaseError'}) 
             }
-            return res.json({code: 200, msg: 'Success', data: results})
+            connection.query('SELECT * FROM moment', (err: MysqlError | null, results: UserMoment[]) => {
+                connection.release()
+                if (err) {
+                    return res.status(500).json({code: 500, msg: 'DatabaseError'}) 
+                }
+                return res.json({code: 200, msg: 'Success', data: results})
+            })
         })
+    }).catch(_ => {
+        return res.status(401).json({code: 401, msg: 'Unauthorized'})
     })
 }
 
@@ -176,6 +176,8 @@ const getMoments = (req: Request, res: Response) => {
                 return res.json({code: 200, msg: 'Success', data: results})
             })
         })
+    }).catch(_ => {
+        return res.status(401).json({code: 401, msg: 'Unauthorized'})
     })
 }
 
@@ -203,6 +205,8 @@ const getFoodById = (req: Request, res: Response) => {
                 return res.json({code: 200, msg: 'Success', data: results[0]})
             })
         })
+    }).catch(_ => {
+        return res.status(401).json({code: 401, msg: 'Unauthorized'})
     })
 }
 
@@ -231,6 +235,8 @@ const uploadMoments = (req: Request, res: Response) => {
                 return res.json({code: 200, msg: 'Success'})
             })
         })
+    }).catch(_ => {
+        return res.status(401).json({code: 401, msg: 'Unauthorized'})
     })
 }
 
@@ -255,6 +261,8 @@ const updatePreference = (req: Request, res: Response) => {
                 return res.json({code: 200, msg: 'Success'})
             })
         })
+    }).catch(_ => {
+        return res.status(401).json({code: 401, msg: 'Unauthorized'})
     })
 }
 
@@ -279,6 +287,8 @@ const uploadHistory = (req: Request, res: Response) => {
                 return res.json({code: 200, msg: 'Success'})
             })
         })
+    }).catch(_ => {
+        return res.status(401).json({code: 401, msg: 'Unauthorized'})
     })
 }
 
@@ -298,6 +308,8 @@ const getHistory = (req: Request, res: Response) => {
                 return res.json({code: 200, msg: 'Success', data: result})
             })
         })
+    }).catch(_ => {
+        return res.status(401).json({code: 401, msg: 'Unauthorized'})
     })
 }
 
