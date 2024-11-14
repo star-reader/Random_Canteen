@@ -15,5 +15,7 @@ const active = ref('food')
 </script>
 
 <style lang='less' scoped>
-
+.app-nav-bar{
+    z-index: 9999;
+}
 </style>

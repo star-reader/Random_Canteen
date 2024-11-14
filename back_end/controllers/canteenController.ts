@@ -179,6 +179,33 @@ const getMoments = (req: Request, res: Response) => {
     })
 }
 
+const getFoodById = (req: Request, res: Response) => {
+    jwtVerify(getAuthorizationByHeader(req.headers.authorization)).then(payload => {
+        if (!payload) return res.status(401).json({code: 401, msg: 'Unauthorized'})
+        const { id } = req.query
+        if (!id){
+            res.status(400).json({code: 400, msg: 'MissingData'})
+            return
+        }
+        getPool().getConnection((err, connection) => {
+            if (err) {
+                res.status(500).json({code: 500, msg: 'DatabaseError'})
+                return
+            }
+            connection.query('SELECT * FROM foods WHERE id = ?', [id], (err: MysqlError | null, results: Food[]) => {
+                connection.release()
+                if (err) {
+                    return res.status(500).json({code: 500, msg: 'DatabaseError'})
+                }
+                if (!results || !results.length || !results[0]){
+                    return res.status(404).json({code: 404, msg: 'NotFound'})
+                }
+                return res.json({code: 200, msg: 'Success', data: results[0]})
+            })
+        })
+    })
+}
+
 const uploadMoments = (req: Request, res: Response) => {
     jwtVerify(getAuthorizationByHeader(req.headers.authorization)).then(payload => {
         if (!payload) return res.status(401).json({code: 401, msg: 'Unauthorized'})
@@ -281,5 +308,6 @@ export default{
   getDataByCanteen,
   getMoments, uploadMoments,
   updatePreference,
-  uploadHistory, getHistory
+  uploadHistory, getHistory,
+  getFoodById
 }
