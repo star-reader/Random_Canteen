@@ -31,6 +31,8 @@ export default defineComponent({
 @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css');
 
 .container_f {
+    position: relative;
+    width: 100%;
     display: flex;
     justify-content: space-around;
     align-items: center;
