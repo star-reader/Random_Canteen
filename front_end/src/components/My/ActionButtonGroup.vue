@@ -53,21 +53,18 @@ export default defineComponent({
     transition: all 0.3s ease-in-out;
     background: none;
     border: none;
-}
-
-.icon-button:hover {
-    transform: scale(1.1);
-}
-
-.icon-button i {
-    font-size: 3rem;
-    color: rgb(35, 235, 185);
-}
-
-.icon-button span {
-    margin-top: 20px;
-    font-weight: bold;
-    font-size: 1rem;
-    color: rgba(107, 108, 110,0.8);
+    &:hover{
+        transform: scale(1.1);
+    }
+    i {
+        font-size: 3rem;
+        color: rgb(35, 235, 185);
+    }
+    span {
+        margin-top: 20px;
+        font-weight: bold;
+        font-size: 1rem;
+        color: rgba(107, 108, 110,0.8);
+    }
 }
 </style>
