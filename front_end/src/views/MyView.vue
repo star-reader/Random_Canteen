@@ -11,9 +11,9 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import { useRouter } from 'vue-router'
-import ProfileHeader from '@/component/My/ProHeader.vue'
-import ActionButtonGroup from '@/component/My/ActionButtonGroup.vue'
-import ServiceMenu from '@/component/My/ServiceMenu.vue'
+import ProfileHeader from '@/components/My/ProfileHeader.vue'
+import ActionButtonGroup from '@/components/My/ActionButtonGroup.vue'
+import ServiceMenu from '@/components/My/ServiceMenu.vue'
 
 export default defineComponent({
   components: {

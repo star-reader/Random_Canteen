@@ -7,15 +7,20 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    ActionButtonGroup: typeof import('./src/components/My/ActionButtonGroup.vue')['default']
     ButtonContainer: typeof import('./src/components/Community/ButtonContainer.vue')['default']
+    Diary: typeof import('./src/components/My/diary.vue')['default']
+    Foodcard: typeof import('./src/components/My/Foodcard.vue')['default']
     FoodCard: typeof import('./src/components/Community/FoodCard.vue')['default']
     Index: typeof import('./src/components/Food/Index.vue')['default']
     MapContainer: typeof import('./src/components/Map/MapContainer.vue')['default']
     PreferenceSelector: typeof import('./src/components/Food/PreferenceSelector.vue')['default']
+    ProfileHeader: typeof import('./src/components/My/ProfileHeader.vue')['default']
     Result: typeof import('./src/components/Food/Result.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SearchContainer: typeof import('./src/components/Community/SearchContainer.vue')['default']
+    ServiceMenu: typeof import('./src/components/My/ServiceMenu.vue')['default']
     VanButton: typeof import('vant/es')['Button']
     VanCard: typeof import('vant/es')['Card']
     VanCell: typeof import('vant/es')['Cell']
