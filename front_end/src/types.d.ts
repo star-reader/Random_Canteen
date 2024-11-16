@@ -30,6 +30,14 @@ type UserMoment = {
     time: Date | string
 }
 
+type UserInfo = {
+    username: string,
+    canteens: string,
+    avatar: null | string,
+    preference: string | null
+}
+
+
 // 自定义的随机规则，如选择最近的食堂、无需排队、优先评分高、不吃已经选过的等
 type selfRule = {
     nearest: false | string, //如果不需要传入false，否则传入食堂名称

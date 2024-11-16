@@ -21,6 +21,7 @@ declare module 'vue' {
     RouterView: typeof import('vue-router')['RouterView']
     SearchContainer: typeof import('./src/components/Community/SearchContainer.vue')['default']
     ServiceMenu: typeof import('./src/components/My/ServiceMenu.vue')['default']
+    UploadPage: typeof import('./src/components/Community/UploadPage.vue')['default']
     VanButton: typeof import('vant/es')['Button']
     VanCard: typeof import('vant/es')['Card']
     VanCell: typeof import('vant/es')['Cell']
