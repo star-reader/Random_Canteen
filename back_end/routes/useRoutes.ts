@@ -2,7 +2,6 @@ import express from 'express'
 import userController from '../controllers/canteenController'
 
 const router = express.Router()
-router.get('/testToken', userController.testToken)
 router.get('/getAllFoods', userController.getAllFoods)
 router.post('/register', userController.register)
 router.post('/login', userController.login)
@@ -14,5 +13,6 @@ router.post('/updatePreference', userController.updatePreference)
 router.post('/uploadHistory', userController.uploadHistory)
 router.get('/getHistory', userController.getHistory)
 router.get('/getFoodById', userController.getFoodById)
+router.post('/uploadAvatar', userController.uploadAvatar)
 
 export default router

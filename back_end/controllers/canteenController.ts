@@ -5,21 +5,8 @@ import { getAuthorizationByHeader, getRandomString } from '../services/utils'
 import type { MysqlError } from 'mysql'
 import type { Food, JWTPayload, UserHistory, UserMoment } from '../models/types'
 import randomGetFood from '../services/randomGetFood'
-import { dataEncrypt } from '../services/crypto'
 
 
-const testToken = (req: Request, res: Response) => {
-  const payload: JWTPayload = {
-    'amr': ['openid', 'name'],
-    'iss': 'https://api.starjin.top/users',
-    'aud': 'https://api.starjin.top/users/endpoint',
-    'scope': ['openid', 'name', 'publicRead', 'publicWrite', 'db'],
-    'username': 'test',
-    'jid': getRandomString(16)
-  }
-  jwtSign(payload).then(token => res.json({token}))
-  .catch(err => res.status(500).send(err))
-}
 
 const register = (req:Request, res: Response): void => {
     const {username, password} = req.body
@@ -63,7 +50,7 @@ const login = (req:Request, res: Response) => {
             return res.status(500).json({code: 500, msg: 'DatabaseError'})
         }
         connection.query(
-          'SELECT username, canteens, preference FROM users WHERE username = ? AND password = ?',
+          'SELECT username, avatar, canteens, preference FROM users WHERE username = ? AND password = ?',
           [username, password], (err, results) => {
             connection.release()
             if (err) {
@@ -74,8 +61,8 @@ const login = (req:Request, res: Response) => {
                 // 签发JWT
                 const payload: JWTPayload = {
                   'amr': ['openid', 'name'],
-                  'iss': 'https://api.starjin.top/users',
-                  'aud': 'https://api.starjin.top/users/endpoint',
+                  'iss': 'https://api.usagi-jin.top/users',
+                  'aud': 'https://api.usagi-jin.top/users/endpoint',
                   'scope': ['openid', 'name', 'publicRead', 'publicWrite', 'db'],
                   'username': username,
                   'jid': getRandomString(16)
@@ -313,13 +300,37 @@ const getHistory = (req: Request, res: Response) => {
     })
 }
 
+const uploadAvatar = (req: Request, res: Response) => {
+    jwtVerify(getAuthorizationByHeader(req.headers.authorization)).then(payload => {
+        if (!payload) return res.status(401).json({code: 401, msg: 'Unauthorized'})
+        const { url } = req.body as {url: string}
+        if (!url){
+            return res.status(400).json({code: 400, msg: 'MissingData'})
+        }
+        getPool().getConnection((err, connection) => {
+            if (err) {
+                return res.status(500).json({code: 500, msg: 'DatabaseError'})
+            }
+            connection.query(`UPDATE user SET avatar = ? WHERE username = ?`,[url, payload.username], 
+            (err: MysqlError | null, result: UserHistory[]) => {
+                connection.release()
+                if(err) {
+                    return res.status(500).json({code: 500, msg: 'DatabaseError'})
+                }
+                return res.json({code: 200, msg: 'Success', data: result})
+            })
+        })
+    }).catch(_ => {
+        return res.status(401).json({code: 401, msg: 'Unauthorized'})
+    })
+}
+
 export default {
-  testToken,
   register, login,
   getAllFoods, randomMeal,
   getDataByCanteen,
   getMoments, uploadMoments,
   updatePreference,
   uploadHistory, getHistory,
-  getFoodById
+  getFoodById, uploadAvatar
 }

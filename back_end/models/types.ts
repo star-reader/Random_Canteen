@@ -1,6 +1,6 @@
 type JWTPayload = {
-    'iss': 'https://api.starjin.top/users',
-    'aud': 'https://api.starjin.top/users/endpoint',
+    'iss': 'https://api.usagi-jin.top/users',
+    'aud': 'https://api.usagi-jin.top/users/endpoint',
     'username': string,
     'scope': string[],
     'amr': ['openid', 'name'],
@@ -49,7 +49,13 @@ type selfRule = {
     noRecent: boolean
 }
 
+type UserInfo = {
+    username: string,
+    canteens: string,
+    avatar: null | string,
+    preference: string | null
+}
 
 export type { 
-    JWTPayload , Food, UserHistory, UserMoment, selfRule
+    JWTPayload , Food, UserHistory, UserMoment, selfRule, UserInfo
 }

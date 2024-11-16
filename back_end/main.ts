@@ -8,7 +8,9 @@ import router from './routes/useRoutes'
 import mysqlConfig from './config/mysql/mysql'
 
 const app = express()
-app.use(cors())
+app.use(cors({
+    'origin': 'https://food.scauaie.cn,https://usagi-jin.top,http://localhost:5173'
+}))
 app.use(bodyParser.json())
 app.use('/canteen', router)
 
