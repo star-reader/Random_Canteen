@@ -1,7 +1,7 @@
 import CryptoJS from 'crypto-js'
-import {_key, _iv} from '@/config/crypto/key.js'
-const key = CryptoJS.enc.Utf8.parse(_key as string)
-const iv = CryptoJS.enc.Utf8.parse(_iv as string)
+import _crypto from '@/config/crypto/key.js'
+const key = CryptoJS.enc.Utf8.parse(_crypto.key as string)
+const iv = CryptoJS.enc.Utf8.parse(_crypto.iv as string)
 
 /**AES解密数据 */
 function dataDecrypt(word: any) {

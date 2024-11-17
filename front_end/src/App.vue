@@ -10,9 +10,11 @@
 
 <script lang='ts' setup>
 import { onMounted } from 'vue';
+import axios from 'axios';
 import NavigationTabBar from './layout/NavBar/NavigationTabBar.vue';
 import router from './router';
 import { dataDecrypt } from './utils/crypto';
+import api from './config/api/api';
 
 interface LoginCert {
     username: string,
@@ -23,15 +25,24 @@ interface LoginCert {
 onMounted(() => {
     const _cert = localStorage.getItem('cert')
     if (!_cert) {
-        router.push('/login')
+        return router.push('/login')
     }else{
         let cert: LoginCert
         try {
             cert = JSON.parse(dataDecrypt(_cert))
         } catch (error) {
-            router.push('/login')
+            return router.push('/login')
         }
-        
+        axios.post(api.login,{
+            username: cert.username,
+            password: cert.password
+        }).then(res => {
+            const userData = res.data.data
+            const token = res.data.token
+            localStorage.setItem('token', token)
+            localStorage.setItem('userData', JSON.stringify(userData))
+            router.push('/index')
+        }).catch(_ => router.push('/login'))
     }
 })
 

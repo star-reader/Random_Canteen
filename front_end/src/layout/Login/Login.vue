@@ -5,7 +5,6 @@
         </div>
     <div class="main-frame">
     <div class="main-text">登录系统后就可以干饭啦</div>
-        <van-form @submit="onSubmit">
         <van-cell-group inset>
             <van-field
             v-model="form.username"
@@ -24,7 +23,8 @@
             />
         </van-cell-group>
         <div style="margin: 16px;">
-            <van-button round block type="primary" native-type="submit">
+            <van-button round block 
+            type="primary" @click="onLogin">
             登录
             </van-button> <br>
             <!-- <van-button round block type="warning" @click="handleReg" >
@@ -37,16 +37,19 @@
         <div class="re-area" @click="handleForgetPassword">
             <a href="javascript:void(0)">忘记密码</a>
         </div>
-        </van-form>
     </div>
     </div>
 </template>
 
 <script lang='ts' setup>
-import { ref } from 'vue';
+import { ref, toRaw } from 'vue';
 import router from '@/router';
+import axios from 'axios'
+import { showFailToast, showToast, showSuccessToast } from 'vant'
 import foodBg from '@/assets/food/food.png'
 import { showDialog } from 'vant';
+import api from '@/config/api/api';
+import { dataEncrypt } from '@/utils/crypto';
 
 interface LoginForm {
     username: string,
@@ -58,8 +61,19 @@ const form = ref<LoginForm>({
     password: ''
 })
 
-const onSubmit = (values: LoginForm) => {
-    console.log('submit', values)
+const onLogin = () => {
+    const data = toRaw(form.value)
+    showToast('登录中...')
+    data.password = dataEncrypt(data.password)
+    axios.post(api.login,{...data}).then(res => {
+        showSuccessToast('登录成功')
+        const token = res.data.token
+        const userData = res.data.userData
+        localStorage.setItem('token',token)
+        localStorage.setItem('cert', dataEncrypt(data))
+        localStorage.setItem('userData',JSON.stringify(userData))
+        router.push('/index')
+    }).catch(_ => showFailToast('登录失败'))
 }
 
 const handleForgetPassword = () => {
