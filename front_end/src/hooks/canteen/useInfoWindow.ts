@@ -1,4 +1,4 @@
-import canteenWriteOutHTML from "@/config/canteenWriteOutHTML"
+import canteenWriteOutHTML from "@/hooks/canteenWriteOutHTML"
 import createInfoWindow from "@/utils/createInfoWindow";
 import numberForString from "@/utils/numberForString";
 
