@@ -325,6 +325,7 @@ const uploadAvatar = (req: Request, res: Response) => {
     })
 }
 
+
 export default {
   register, login,
   getAllFoods, randomMeal,

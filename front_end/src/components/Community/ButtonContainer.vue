@@ -1,5 +1,5 @@
 <template>
-    <div class="button-area">
+    <div class="button-area" @click="onClick">
         <van-button round block 
             type="primary" native-type="submit">
             我也要写
@@ -8,7 +8,11 @@
 </template>
 
 <script lang='ts' setup>
+import pubsub from 'pubsub-js'
 
+const onClick = () => {
+    pubsub.publish('click-my-writing', 1)
+}
 </script>
 
 <style lang='less' scoped>

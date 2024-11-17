@@ -19,15 +19,15 @@
                 @click="showPicker1 = true"
                 :rules="[{ required: true, message: '请选择档口' }]"
                 />
-                <van-popup v-model:show="showPicker2" position="bottom">
+                <van-popup v-model:show="showPicker1" position="bottom">
                 <van-picker
                     :columns="canteens"
                     @confirm="onConfirm"
-                    @cancel="showPicker2 = false"
+                    @cancel="showPicker1 = false"
                 />
             </van-popup>
             <van-field
-                v-model="form.canteen"
+                v-model="form.food_id"
                 is-link
                 readonly
                 name="food"
@@ -103,9 +103,10 @@
 </template>
 
 <script lang='ts' setup>
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
+import pubsub from 'pubsub-js'
 
-const isShow = ref(true)
+const isShow = ref(false)
 const showPicker1 = ref(false)
 const showPicker2 = ref(false)
 const isLoadingFood = ref(true)
@@ -141,7 +142,11 @@ const form = ref({
     time: ''
 })
 
-
+onMounted(() => {
+    pubsub.subscribe('click-my-writing',() => {
+        return isShow.value = true
+    })
+})
 
 </script>
 
