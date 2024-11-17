@@ -86,12 +86,13 @@
                     />
                 </template>
             </van-field>
-            <van-field
+            <!-- <van-field
                 v-model="form.tags"
                 name="title"
                 label="标签"
                 placeholder="标签，最多3个,使用逗号隔开"
-            /> <br/>
+            /> -->
+            <br/>
             <van-button round block 
                 type="primary" native-type="submit">
                 提交

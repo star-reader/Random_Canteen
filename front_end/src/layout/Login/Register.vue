@@ -4,7 +4,7 @@
             <img :src="foodBg" alt="底部食物">
         </div>
     <div class="main-frame">
-    <div class="main-text">登录系统后就可以干饭啦</div>
+    <div class="main-text">注册系统</div>
         <van-form @submit="onSubmit">
         <van-cell-group inset>
             <van-field
@@ -25,17 +25,14 @@
         </van-cell-group>
         <div style="margin: 16px;">
             <van-button round block type="primary" native-type="submit">
-            登录
+            注册
             </van-button> <br>
-            <!-- <van-button round block type="warning" @click="handleReg" >
-            没有账号？点击注册
+            <!-- <van-button round block type="warning" @click="handleLogin" >
+            已有账号？立即登录
             </van-button> -->
         </div>
         <div class="re-area">
-            没有账号？ <a href="/register">立即注册！</a>
-        </div>
-        <div class="re-area" @click="handleForgetPassword">
-            <a href="javascript:void(0)">忘记密码</a>
+            已有账号？ <a href="/login">立即登录</a>
         </div>
         </van-form>
     </div>
@@ -44,9 +41,8 @@
 
 <script lang='ts' setup>
 import { ref } from 'vue';
-import router from '@/router';
 import foodBg from '@/assets/food/food.png'
-import { showDialog } from 'vant';
+import router from '@/router';
 
 interface LoginForm {
     username: string,
@@ -62,12 +58,6 @@ const onSubmit = (values: LoginForm) => {
     console.log('submit', values)
 }
 
-const handleForgetPassword = () => {
-    showDialog({
-        title: '忘记密码',
-        message: '请提供账号cid，联系系统作者jinch2287@outlook.com请求重置密码',
-    })
-}
 
 </script>
 
