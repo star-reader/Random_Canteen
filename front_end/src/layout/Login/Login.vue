@@ -78,12 +78,14 @@ const handleForgetPassword = () => {
     height: 0;
     width: 100%;
     height: 100%;
+    z-index: 1000;
+    background-color: white;
     .canva-bg{
         position: absolute;
         left: 0;
-        bottom: 60px;
+        bottom: 10px;
         width: 100%;
-        z-index: 2;
+        z-index: 1001;
         img{
             position: relative;
             width: 100%;

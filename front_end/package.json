@@ -12,6 +12,8 @@
   },
   "dependencies": {
     "@amap/amap-jsapi-loader": "^1.0.1",
+    "axios": "^1.7.7",
+    "crypto-js": "^4.2.0",
     "less": "^4.2.0",
     "pubsub-js": "^1.9.5",
     "vant": "^4.9.8",
@@ -20,6 +22,7 @@
   },
   "devDependencies": {
     "@tsconfig/node20": "^20.1.4",
+    "@types/crypto-js": "^4.2.2",
     "@types/node": "^20.17.0",
     "@types/pubsub-js": "^1.8.6",
     "@vant/auto-import-resolver": "^1.2.1",
