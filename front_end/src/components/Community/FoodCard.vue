@@ -56,10 +56,12 @@
             </div>
         </div>
     </div>
+    <UploadPage />
 </template>
 
 <script lang='ts' setup>
 import { ref } from 'vue'
+import UploadPage from './UploadPage.vue';
 import testPic from '@/assets/test/food.png'
 
 const ranking = ref(2)

@@ -20,7 +20,7 @@ type UserHistory = {
 type UserMoment = {
     username: string,
     food_id: number,
-    canteen: string
+    canteen: string,
     title: string,
     content: string,
     picaddress: string | undefined,
