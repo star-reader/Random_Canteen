@@ -87,10 +87,10 @@
                 </template>
             </van-field>
             <van-field
-                v-model="form.title"
+                v-model="form.tags"
                 name="title"
                 label="标签"
-                placeholder="标签，最多3个"
+                placeholder="标签，最多3个,使用逗号隔开"
             /> <br/>
             <van-button round block 
                 type="primary" native-type="submit">

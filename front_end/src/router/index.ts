@@ -4,6 +4,7 @@ import MapView from '@/views/MapView.vue'
 import CommunityView from '@/views/CommunityView.vue'
 import MyView from '@/views/MyView.vue'
 import Diary from '@/components/My/diary.vue'
+import Login from '@/layout/Login/Login.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -36,6 +37,11 @@ const router = createRouter({
       name: 'Diary',
       path: '/diary',
       component: Diary
+    },
+    {
+      name: 'Login',
+      path: '/login',
+      component: Login
     }
   ]
 })
