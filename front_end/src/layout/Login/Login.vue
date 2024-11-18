@@ -82,10 +82,9 @@ const onLogin = () => {
     axios.post(api.login,{...data}).then(res => {
         showSuccessToast('登录成功')
         const token = res.data.token
-        const userData = res.data.userData
         localStorage.setItem('token',token)
         localStorage.setItem('cert', dataEncrypt(data))
-        localStorage.setItem('userData',JSON.stringify(userData))
+        localStorage.setItem('userData',JSON.stringify(res.data.data))
         router.push('/index')
     }).catch(_ => showFailToast('登录失败'))
 }

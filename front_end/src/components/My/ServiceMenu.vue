@@ -2,7 +2,7 @@
     <div class="services-menu">
         <ul>
             <li @click="logOut">
-                <a href="#">
+                <a href="javascript:void(0)">
                     <img src="../../assets/my/退出登陆.png" alt="退出登录图标">
                     <span>退出登录 ></span>
                 </a>

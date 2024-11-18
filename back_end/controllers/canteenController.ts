@@ -314,12 +314,12 @@ const uploadAvatar = (req: Request, res: Response) => {
                 return res.status(500).json({code: 500, msg: 'DatabaseError'})
             }
             connection.query(`UPDATE user SET avatar = ? WHERE username = ?`,[url, payload.username], 
-            (err: MysqlError | null, result: UserHistory[]) => {
+            (err: MysqlError | null) => {
                 connection.release()
                 if(err) {
                     return res.status(500).json({code: 500, msg: 'DatabaseError'})
                 }
-                return res.json({code: 200, msg: 'Success', data: result})
+                return res.json({code: 200, msg: 'Success'})
             })
         })
     }).catch(_ => {
