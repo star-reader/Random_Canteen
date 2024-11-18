@@ -40,5 +40,6 @@ declare module 'vue' {
     VanTabbar: typeof import('vant/es')['Tabbar']
     VanTabbarItem: typeof import('vant/es')['TabbarItem']
     VanTag: typeof import('vant/es')['Tag']
+    Verification: typeof import('./src/components/common/Verification.vue')['default']
   }
 }

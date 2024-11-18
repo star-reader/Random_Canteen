@@ -23,6 +23,7 @@ interface LoginCert {
 }
 
 onMounted(() => {
+    if (location.pathname === '/login' || location.pathname === '/register') return
     const _cert = localStorage.getItem('cert')
     if (!_cert) {
         return router.push('/login')
