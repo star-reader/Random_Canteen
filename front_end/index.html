@@ -20,27 +20,5 @@
     <div id="app"></div>
     <input hidden aria-hidden="true" id="full-screen"></input>
     <script type="module" src="/src/main.ts"></script>
-    <!-- <script>
-      (() => {
-        const tiggleFullScreen = () => {
-          if (document.fullscreenEnabled || document.webkitFullscreenEnabled || document.mozFullscreenEnabled || document.msFullscreenEnabled) {
-              const elem = document.documentElement
-              if (elem.requestFullscreen) {
-                  elem.requestFullscreen()
-              } else if (elem.webkitRequestFullscreen) {
-                  elem.webkitRequestFullscreen()
-              } else if (elem.mozRequestFullscreen) {
-                  elem.mozRequestFullscreen()
-              } else if (elem.msRequestFullscreen) {
-                  elem.msRequestFullscreen()
-              }
-          }
-        }
-        const InputEl = document.getElementById('full-screen')
-        const bodyEl = document.getElementsByTagName('body')[0]
-        InputEl.addEventListener('click', tiggleFullScreen) && InputEl.click()
-        bodyEl.addEventListener('click', tiggleFullScreen)
-      })()
-    </script> -->
   </body>
 </html>

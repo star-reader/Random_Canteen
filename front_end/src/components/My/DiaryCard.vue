@@ -21,7 +21,7 @@ onMounted(() => {
         forbidClick: true
     })
     axios.get(api.getHistory,{'headers': createHeader()}).then(res => {
-        data.value = res.data.data
+        data.value = res.data.data.reverse()
         closeToast()
     })
 })
@@ -35,7 +35,7 @@ onMounted(() => {
     width: 100%;
     top: 0;
     // 100px是顶部标题和搜索栏，60是下面“我要发布”的组件
-    height: calc(100% - 100px - 60px);
+    height: 100%;
     overflow: hidden auto;
 }
 

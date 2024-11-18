@@ -4,6 +4,9 @@
             <img :src="topFoodPic" alt="顶部食物图片">
         </div>
         <div class="main-frame">
+            <div class="close-button button-like" role="button" @click="isShow = false">
+                <van-icon name="cross" />
+            </div>
             <div class="content-area">
                 <div class="main-name">{{ result.canteen }}</div>
                 <div class="sub-name">{{ result.name }}</div>
@@ -143,6 +146,23 @@ onMounted(() => {
         background-color: #fce7d2;
         box-shadow: 0px 0px 10px 0px #0000001a;
         text-align: center;
+        .close-button{
+            position: absolute;
+            right: -14px;
+            top: -14px;
+            width: 36px;
+            height: 36px;
+            background-color: rgb(231, 124, 24);
+            color: white;
+            font-size: 26px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            border-radius: 50%;
+            box-shadow: 0px 0px 10px 0px #0000001a;
+            z-index: 30;
+        }
         .content-area{
             position: relative;
             margin-top: 12px;
