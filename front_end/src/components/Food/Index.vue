@@ -28,15 +28,58 @@ import Result from './Result.vue'
 
 import TextBg from '@/assets/food/topBar.png'
 import actionBg from '@/assets/food/actionBar.png'
+import { closeToast, showFailToast, showLoadingToast } from 'vant'
+import axios from 'axios'
+import api from '@/config/api/api'
+import createHeader from '@/utils/createHeader'
+import { onMounted } from 'vue'
+import useCurrentCanteen from '@/hooks/canteen/useCurrentCanteen'
 // import foodBg from '@/assets/food/food.png'
 
 const handlePreference = () => {
     pubsub.publish('open-selector', 1)
 }
 
-const handleOpenResult = () => {
-    pubsub.publish('open-result', 1)
+const handleOpenResult = async () => {
+    const _preference = localStorage.getItem('preference')
+    let preference: any
+    if (_preference) {
+        try {
+            preference = JSON.parse(_preference)
+        } catch (error) {
+            preference = {}
+        }
+    }else{
+        preference = {}
+    }
+    showLoadingToast({
+        'message': '正在努力寻找美食中...',
+        'duration': 3000,
+        forbidClick: true
+    })
+    if (preference.noRecent){
+        // 如果不吃历史吃过的，就获取历史记录，通过noRecent传入
+        preference.noRecent = (await axios.get(api.getHistory, { 'headers': createHeader() })).data
+    }
+    if (preference.nearest){
+        //获取最近的食堂
+        preference.nearest = await useCurrentCanteen()
+    }
+    if (preference.noCurrent){
+        preference.noCurrent = await useCurrentCanteen()
+    }
+    axios.post(api.randomMeal, {'selfRule': preference}, {'headers': createHeader()}).then(res => {
+        closeToast()
+        pubsub.publish('open-result', res.data.data)
+    }).catch(_ => {
+        closeToast()
+        showFailToast('选择失败！')
+    })
 }
+
+onMounted(() => {
+    pubsub.subscribe('request-change-food',() => handleOpenResult())
+})
 
 </script>
 

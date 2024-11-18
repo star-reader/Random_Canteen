@@ -1,4 +1,6 @@
 export default () => {
     const token = localStorage.getItem('token')
-    return `Bearer ${token}`
+    return {
+        'authorization': `Bearer ${token}`
+    }
 }

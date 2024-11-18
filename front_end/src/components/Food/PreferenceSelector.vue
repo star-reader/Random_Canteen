@@ -41,7 +41,7 @@
 </template>
 
 <script lang='ts' setup>
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, toRaw } from 'vue'
 import pubsub from 'pubsub-js'
 
 const selection = ref({
@@ -61,6 +61,7 @@ const height = ref(anchors[0])
 
 const onConform = () => {
     height.value = anchors[0]
+    localStorage.setItem('preference', JSON.stringify(toRaw(selection.value)))
 }
 
 onMounted(() => {

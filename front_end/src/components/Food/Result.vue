@@ -5,25 +5,25 @@
         </div>
         <div class="main-frame">
             <div class="content-area">
-                <div class="main-name">西园</div>
-                <div class="sub-name">二楼自助炒饭</div>
+                <div class="main-name">{{ result.canteen }}</div>
+                <div class="sub-name">{{ result.name }}</div>
             </div>
             <div class="pic-area">
-                <img :src="testPic" alt="食物配图">
+                <img :src="result.picaddress" alt="食物配图">
             </div>
             <div class="static-area">
                 <div class="data-area">
                     <div class="label">标签</div>
                     <div class="minding">
-                        <van-tag type="primary">自选</van-tag>
-                        <van-tag type="success">饭</van-tag>
-                        <van-tag type="danger">必打卡美食</van-tag>
+                        <van-tag 
+                        :type="!index ? 'primary' : index == 1 ? 'success' : 'danger'"
+                        v-for="(tag, index) in createTags(result.tag)">{{ tag }}</van-tag>
                     </div>
                 </div>
                 <div class="data-area">
                     <div class="label">评分</div>
                     <div class="minding">
-                        <van-rate v-model="ranking" 
+                        <van-rate v-model="result.ranking" 
                         readonly color="#ffd21e"
                         void-icon="star"
                         void-color="#eee" />
@@ -32,7 +32,7 @@
                 <div class="data-area">
                     <div class="label">拥挤程度</div>
                     <div class="minding">
-                        <van-rate v-model="queue" 
+                        <van-rate v-model="result.queue" 
                         readonly color="#ffd21e"
                         void-icon="star"
                         void-color="#eee" />
@@ -45,7 +45,8 @@
                     就你了
                 </van-button>
                 <div class="divider"></div>
-                <van-button round block type="warning" native-type="submit">
+                <van-button round block type="warning" 
+                native-type="submit" @click="changeFood">
                 换一个
                 </van-button>
             </div>
@@ -62,20 +63,40 @@
 import { onMounted, ref } from 'vue'
 import pubsub from 'pubsub-js'
 import topFoodPic from '@/assets/result/topFood.png'
-import testPic from '@/assets/test/food.png'
 import usagiPic from '@/assets/result/usagi.jpg'
 
 const isShow = ref(false)
 const showUsagi = ref(false)
-const ranking = ref(1)
-const queue = ref(3)
+
+const result = ref<Food>({
+    "id": 1,
+    "canteen": "",
+    "name": "",
+    "tag": "",
+    "ranking": 0,
+    "picaddress": '',
+    "queue": 0,
+    "users": ''
+})
+
+const createTags = (tag: string) => {
+    return tag.split(',')
+}
 
 const handleConform = () => {
     showUsagi.value = true
 }
 
+const changeFood = () => {
+    pubsub.publish('request-change-food', 1)
+}
+
 onMounted(() => {
-    pubsub.subscribe('open-result',() => isShow.value = true)
+    pubsub.subscribe('open-result',(_,data: Food) => {
+        result.value = data
+        isShow.value = true
+    }
+)
 })
 
 </script>

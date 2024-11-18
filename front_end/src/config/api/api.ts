@@ -8,6 +8,7 @@ export default {
     uploadMoments: 'https://api.usagi-jin.top/canteen/uploadMoments',
     updatePreference: 'https://api.usagi-jin.top/canteen/updatePreference',
     uploadHistory: 'https://api.usagi-jin.top/canteen/uploadHistory',
+    getHistory: 'https://api.usagi-jin.top/canteen/getHistory',
     getFoodById: 'https://api.usagi-jin.top/canteen/getFoodById',
     uploadAvatar: 'https://api.usagi-jin.top/canteen/uploadAvatar',
 }

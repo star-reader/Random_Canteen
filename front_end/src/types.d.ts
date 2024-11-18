@@ -6,7 +6,7 @@ type Food = {
     ranking: number,
     queue: number,
     picaddress: string,
-    users: string | undefined
+    users: string | null
 }
 
 type UserHistory = {
