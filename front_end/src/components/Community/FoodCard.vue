@@ -10,20 +10,26 @@
 import { onMounted, ref } from 'vue'
 import pubsub from 'pubsub-js'
 import axios from 'axios';
+import { closeToast, showDialog, showFailToast, showLoadingToast } from 'vant';
 import api from '@/config/api/api';
 import UploadPage from './UploadPage.vue'
 import CardItem from './CardItem.vue';
 import createHeader from '@/utils/createHeader';
-import { showDialog, showFailToast } from 'vant';
 
 
 const data = ref<UserMoment[]>([])
 const filteredData = ref<UserMoment[]>()
 
 onMounted(() => {
+    showLoadingToast({
+        'message': '加载中...',
+        'duration': 3000,
+        forbidClick: true
+    })
     axios.get(api.getMoments,{'headers': createHeader()}).then(res => {
         data.value = res.data.data.reverse()
         filteredData.value = data.value
+        closeToast()
     }).catch(_ => showFailToast('交流版块加载失败！'))
     pubsub.subscribe('insert-new',(_,d) => data.value.unshift(d))
 })
@@ -36,6 +42,7 @@ const showDetail = (i: UserMoment) => {
 }
 
 onMounted(() => {
+
     pubsub.subscribe('filter-word',(_,word: string) => {
         filteredData.value = word ? 
         data.value.filter(item => item.title.includes(word) || item.canteen.includes(word) || item.tags.includes(word)) 

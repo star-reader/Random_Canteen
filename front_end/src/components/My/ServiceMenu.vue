@@ -1,21 +1,44 @@
 <template>
     <div class="services-menu">
         <ul>
-            <li>
+            <li @click="logOut">
                 <a href="#">
                     <img src="../../assets/my/退出登陆.png" alt="退出登录图标">
                     <span>退出登录 ></span>
                 </a>
             </li>
-            <li>
+            <!-- <li>
                 <a href="#">
                     <img src="../../assets/my/回到桌面.png" alt="回到桌面图标">
                     <span>回到桌面 ></span>
                 </a>
-            </li>
+            </li> -->
         </ul>
     </div>
 </template>
+
+<script lang="ts" setup>
+import router from '@/router';
+import { showConfirmDialog } from 'vant';
+
+
+const logOut = () => {
+    showConfirmDialog({
+        title: '提示',
+        message:'确认要退出登录？',
+        confirmButtonText:'退出登录',
+        confirmButtonColor: 'orangered',
+        cancelButtonText:'取消'
+    }).then(() => {
+        // on confirm
+        localStorage.removeItem('cert')
+        localStorage.removeItem('token')
+        localStorage.removeItem('userData')
+        router.push('/login')
+    })
+}
+
+</script>
 
 <style lang="less" scoped>
 .services-menu {

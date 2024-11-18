@@ -7,12 +7,12 @@
             @click-left="onClickLeft"
            
         />
- <Foodcard/>
+    <DiaryCard/>
     </div>
 </template>
 
 <script lang='ts' setup>
-import Foodcard from './Foodcard.vue';
+import DiaryCard from './DiaryCard.vue';
 const onClickLeft = () => history.back()
 </script>
 

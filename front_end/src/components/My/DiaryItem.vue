@@ -1,7 +1,5 @@
 <template>
-    <div class="food-card">
-        <!-- 每个食物的详细信息 -->
-        <div class="food-item">
+    <div class="food-item">
             <div class="user-info">
                 <div class="auth-user">
                     <div class="avatar">
@@ -9,12 +7,12 @@
                             round
                             width="26px"
                             height="26px"
-                            src="https://fastly.jsdelivr.net/npm/@vant/assets/cat.jpeg"
+                            :src="user.avatar"
                         />
                     </div>
-                    <div class="username">usagi</div>
+                    <div class="username">{{ user.username }}</div>
                 </div>
-                <div class="time">2024-11-13 22:09:21</div>
+                <div class="time">{{ props.data.time }}</div>
             </div>
             <div class="main-data-area">
                 <div class="img-area">
@@ -23,60 +21,81 @@
                         height="80px"
                         :radius="8"
                         fit="contain"
-                        :src="testPic"
+                        :src="foodData?.picaddress"
                     />
                 </div>
                 <div class="data-area">
-                    <div class="name-title">二楼自选</div>
-                    <div class="name-subtitle">芷园</div>
+                    <div class="name-title">{{ foodData?.name }}</div>
+                    <div class="name-subtitle">{{ foodData?.canteen }}</div>
                     <div class="tag-data">
-                        <van-tag type="primary">自选</van-tag>
-                        <van-tag type="success">饭</van-tag>
-                        <van-tag type="danger">必打卡美食</van-tag>
+                        <van-tag :type="useTagType(index)" 
+                            v-for="(tag, index) in createTags(foodData?.tag ? foodData.tag : '')">{{ tag }}
+                        </van-tag>
                     </div>
                     <div class="ranking-data">
                         <div class="label">评分</div>
                         <div class="minding">
-                            <van-rate v-model="ranking" 
-                            readonly color="#ffd21e"
-                            void-icon="star"
-                            void-color="#eee" />
+                            <van-rate
+                                v-model="rating" 
+                                readonly color="#ffd21e"
+                                void-icon="star"
+                                void-color="#eee" 
+                            />
                         </div>
                     </div>
                     <div class="ranking-data">
                         <div class="label">拥挤程度</div>
                         <div class="minding">
-                            <van-rate v-model="queue" 
-                            readonly color="#ffd21e"
-                            void-icon="star"
-                            void-color="#eee" />
+                            <van-rate
+                                v-model="queue" 
+                                readonly color="#ffd21e"
+                                void-icon="star"
+                                void-color="#eee"
+                            />
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 </template>
 
 <script lang='ts' setup>
-import { ref } from 'vue'
-import testPic from '@/assets/food/food.png'
+import { nextTick, onMounted, ref } from 'vue'
+import axios from 'axios';
+import api from '@/config/api/api';
+import useTagType from '@/hooks/useTagType';
+import createTags from '@/utils/createTags';
+import createHeader from '@/utils/createHeader';
+import useUserInfo from '@/hooks/useUserInfo';
 
-const ranking = ref(2)
-const queue = ref(3)
+
+const rating = ref(0)
+const queue = ref(0)
+
+interface IProps {
+    data: UserHistory
+}
+
+const props = defineProps<IProps>()
+
+const foodData = ref<Food>()
+const user = useUserInfo()
+
+onMounted(() => {
+    nextTick(() => {
+        axios.get(`${api.getFoodById}?id=${props.data.food_id}`,{'headers': createHeader()}).then(res => {
+            if (res.data){
+                foodData.value = res.data.data
+                rating.value = res.data.data.rating
+                queue.value = res.data.data.queue
+            }
+        })
+    })
+})
 </script>
 
 <style lang='less' scoped>
 @CardHeight: 180px;
-.food-card{
-    position: relative;
-    left: 0;
-    width: 100%;
-    top: 0;
-    // 100px是顶部标题和搜索栏，60是下面“我要发布”的组件
-    height: calc(100% - 100px - 60px);
-    overflow: hidden auto;
-}
 .user-info{
     position: relative;
     height: 25px;

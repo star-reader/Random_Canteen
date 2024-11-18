@@ -1,11 +1,20 @@
 <template>
     <div class="background">
         <div class="profile">
-            <img src="../../assets/my/profileheader.jpg" class="head-portrait" alt="User Profile Picture">
-            <div class="name">用户名</div> <!-- 添加用户名 -->
+            <img :src="user.avatar" class="head-portrait" alt="User Profile Picture">
+            <div class="name">{{  user.username }}</div> <!-- 添加用户名 -->
         </div>
     </div>
 </template>
+
+<script lang="ts" setup>
+import useUserInfo from '@/hooks/useUserInfo';
+import { ref } from 'vue';
+
+
+const user = ref(useUserInfo())
+
+</script>
 
 <style lang="less" scoped>
 .background {
@@ -35,7 +44,8 @@
 }
 
 .name {
-    font-size: 1.2em; 
-    color: #fff; 
+    font-size: 1.65em; 
+    color: #fff;
+    font-weight: bold;
 }
 </style>

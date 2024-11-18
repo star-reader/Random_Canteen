@@ -5,6 +5,10 @@
             <ActionButtonGroup @navigate-to-diary="navigateToDiary" />
             <ServiceMenu />
         </div>
+        <div class="attribute">
+            Copyright &copy; 不想排队@华农er今天吃什么 <br>
+            2024-2024 All Rights Reserved
+        </div>
     </div>
 </template>
 
@@ -36,17 +40,23 @@ export default defineComponent({
 </script>
 
 <style lang="less" scoped>
-html, body {
-    overflow: hidden;
-}
 
 .back {
-    background-color: rgb(245, 245, 245);
-    width: 100%; 
-    height: 300px; 
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+  background-color: rgb(245, 245, 245);
+  width: 100%; 
+  height: 300px; 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+}
+.attribute{
+  margin-top: 20px;
+  font-size: 15px;
+  color: #333;
+  text-align: center;
+  user-select: none;
+  line-height: 26px;
 }
 </style>

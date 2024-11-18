@@ -4,11 +4,11 @@
             <i class="fa-solid fa-clock"></i>
             <span>干饭日记</span>
         </button>
-        <button class="icon-button favorites">
+        <button class="icon-button favorites" @click="todoFunction">
             <i class="fa-solid fa-heart"></i>
             <span>我的收藏</span>
         </button>
-        <button class="icon-button later">
+        <button class="icon-button later" @click="todoFunction">
             <i class="fa-solid fa-thumbs-down"></i>
             <span>黑名单</span>
         </button>
@@ -16,12 +16,16 @@
 </template>
 
 <script lang="ts">
+import { showToast } from 'vant';
 import { defineComponent } from 'vue'
 
 export default defineComponent({
   methods: {
     navigateToDiary() {
       this.$emit('navigate-to-diary')
+    },
+    todoFunction(){
+        showToast('功能开发中，求求了先别点了~')
     }
   }
 })

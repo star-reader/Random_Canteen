@@ -30,7 +30,7 @@
                     <div class="detail-title">{{ props.data.title }}</div>
                     <div class="tag-data">
                         <van-tag :type="useTagType(index)" 
-                            v-for="(tag, index) in createTags()">{{ tag }}
+                            v-for="(tag, index) in createTags(props.data.tags)">{{ tag }}
                         </van-tag>
                     </div>
                     <div class="ranking-data">
@@ -61,12 +61,12 @@
 </template>
 
 <script lang='ts' setup>
+import { nextTick, onMounted, ref } from 'vue'
+import axios from 'axios';
 import api from '@/config/api/api';
-import pubsub from 'pubsub-js'
+import createTags from '@/utils/createTags';
 import useTagType from '@/hooks/useTagType';
 import createHeader from '@/utils/createHeader';
-import axios from 'axios';
-import { nextTick, onMounted, ref } from 'vue'
 
 interface IProps {
     data: UserMoment
@@ -74,12 +74,6 @@ interface IProps {
 
 const props = defineProps<IProps>()
 const foodData = ref<Food>()
-
-const createTags = () => {
-    const tagStr = props.data.tags
-    const f_tag = tagStr.replace(/，/g, ',')
-    return f_tag.split(',')
-}
 
 
 onMounted(() => {
