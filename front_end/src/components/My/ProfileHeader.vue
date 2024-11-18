@@ -1,7 +1,7 @@
 <template>
     <div class="background">
         <div class="profile">
-            <img :src="user.avatar" class="head-portrait" alt="User Profile Picture" @click="changeAvatar">
+            <img :src="user.avatar ? user.avatar : 'https://api.usagi-jin.top/ImageAPI/avatar/usagi.jpg'" class="head-portrait" alt="User Profile Picture" @click="changeAvatar">
             <div class="name">{{  user.username }}</div> <!-- 添加用户名 -->
             <input type="file" hidden aria-hidden="true" name="avatarUpload"
              accept="image/*" @change="uploadFile" ref="uploadInput">
