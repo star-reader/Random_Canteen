@@ -64,6 +64,10 @@ import { onMounted, ref } from 'vue'
 import pubsub from 'pubsub-js'
 import topFoodPic from '@/assets/result/topFood.png'
 import usagiPic from '@/assets/result/usagi.jpg'
+import axios from 'axios';
+import api from '@/config/api/api';
+import getTime from '@/utils/getTime';
+import createHeader from '@/utils/createHeader';
 
 const isShow = ref(false)
 const showUsagi = ref(false)
@@ -85,6 +89,15 @@ const createTags = (tag: string) => {
 
 const handleConform = () => {
     showUsagi.value = true
+    // 记录历史
+    axios.post(api.uploadHistory, {
+        history:{
+            time: getTime(),
+            canteen: result.value.canteen,
+            food_id: result.value.id,
+            ranking: result.value.ranking
+        }
+    },{'headers': createHeader()})
 }
 
 const changeFood = () => {

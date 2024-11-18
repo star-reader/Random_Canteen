@@ -60,12 +60,19 @@
 </template>
 
 <script lang='ts' setup>
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import UploadPage from './UploadPage.vue';
 import testPic from '@/assets/test/food.png'
 
 const ranking = ref(2)
 const queue = ref(3)
+
+const data = ref<UserMoment[]>([])
+
+onMounted(() => {
+    
+})
+
 </script>
 
 <style lang='less' scoped>
