@@ -19,6 +19,7 @@
 import { nextTick, onMounted, onUnmounted, ref } from "vue";
 import AMapLoader from "@amap/amap-jsapi-loader";
 import useInfoWindow from "@/hooks/canteen/useInfoWindow";
+import { closeToast } from "vant";
 
 let map = null;
 
@@ -45,6 +46,11 @@ const loadMapAndConfigs = () => {
 onMounted(() => {
 
   nextTick(() => {
+    showLoadingToast({
+        'message': '地图数据加载中...',
+        'duration': 8000,
+        forbidClick: true
+    })
     loadMapAndConfigs()
     .then((AMap) => {
         map = new AMap.Map("container", {
@@ -79,6 +85,7 @@ onMounted(() => {
           map.addControl(geolocation);
           geolocation.getCurrentPosition((status, result) => {
             if (status == "complete") {
+              closeToast()
               const LngLatList = [
                 [113.366028, 23.153604],
                 [113.354986, 23.156229],

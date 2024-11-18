@@ -42,7 +42,7 @@ onMounted(() => {
             const token = res.data.token
             localStorage.setItem('token', token)
             localStorage.setItem('userData', JSON.stringify(userData))
-            router.push('/index')
+            // router.push('/index')
         }).catch(_ => router.push('/login'))
     }
 })
