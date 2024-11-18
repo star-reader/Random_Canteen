@@ -147,6 +147,7 @@ onMounted(() => {
     left: 5%;
     margin-top: 200px;
     background-color: white;
+    z-index: 1002;
     .main-text{
         position: relative;
         margin-left: 20px;
