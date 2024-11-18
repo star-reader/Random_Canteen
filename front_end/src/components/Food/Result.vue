@@ -16,7 +16,7 @@
                     <div class="label">标签</div>
                     <div class="minding">
                         <van-tag 
-                        :type="!index ? 'primary' : index == 1 ? 'success' : 'danger'"
+                        :type="useTagType(index)"
                         v-for="(tag, index) in createTags(result.tag)">{{ tag }}</van-tag>
                     </div>
                 </div>
@@ -68,6 +68,7 @@ import axios from 'axios';
 import api from '@/config/api/api';
 import getTime from '@/utils/getTime';
 import createHeader from '@/utils/createHeader';
+import useTagType from '@/hooks/useTagType';
 
 const isShow = ref(false)
 const showUsagi = ref(false)

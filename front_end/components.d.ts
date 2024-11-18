@@ -9,6 +9,7 @@ declare module 'vue' {
   export interface GlobalComponents {
     ActionButtonGroup: typeof import('./src/components/My/ActionButtonGroup.vue')['default']
     ButtonContainer: typeof import('./src/components/Community/ButtonContainer.vue')['default']
+    CardItem: typeof import('./src/components/Community/CardItem.vue')['default']
     Diary: typeof import('./src/components/My/diary.vue')['default']
     Foodcard: typeof import('./src/components/My/Foodcard.vue')['default']
     FoodCard: typeof import('./src/components/Community/FoodCard.vue')['default']

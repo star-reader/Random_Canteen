@@ -30,6 +30,7 @@
                 v-model="form.food_id"
                 is-link
                 readonly
+                required
                 name="food"
                 label="食堂档口"
                 placeholder="选择食堂档口"
@@ -38,7 +39,7 @@
                 />
                 <van-popup v-model:show="showPicker2" position="bottom">
                 <van-picker
-                    :columns="canteens"
+                    :columns="foods"
                     :loading="isLoadingFood"
                     @confirm="onConfirm2"
                     @cancel="showPicker2 = false"
@@ -48,6 +49,7 @@
                 v-model="form.title"
                 name="title"
                 label="标题"
+                required
                 placeholder="标题"
                 :rules="[{ required: true, message: '请输入标题' }]"
             />
@@ -57,12 +59,13 @@
                 autosize
                 label="评价内容"
                 type="textarea"
-                maxlength="50"
+                maxlength="80"
                 placeholder="评价"
                 show-word-limit
+                required
                 :rules="[{ required: true, message: '请输入内容' }]"
             />
-            <van-field name="rating" label="评价"
+            <van-field name="rating" label="评价" required
             :rules="[{ required: true, message: '请填写评价' }]">
                 <template #input>
                     <van-rate
@@ -74,7 +77,7 @@
                     />
                 </template>
             </van-field>
-            <van-field name="queue" label="排队程度"
+            <van-field name="queue" label="排队程度" required
             :rules="[{ required: true, message: '请填写排队程度' }]">
                 <template #input>
                     <van-rate
@@ -86,15 +89,17 @@
                     />
                 </template>
             </van-field>
-            <!-- <van-field
+            <van-field
                 v-model="form.tags"
                 name="title"
                 label="标签"
                 placeholder="标签，最多3个,使用逗号隔开"
-            /> -->
+            />
             <br/>
             <van-button round block 
-                type="primary" native-type="submit">
+                type="primary"
+                native-type="submit"
+                @click="handleSubmit">
                 提交
             </van-button>
         </van-cell-group>
@@ -103,8 +108,14 @@
 </template>
 
 <script lang='ts' setup>
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, toRaw } from 'vue'
 import pubsub from 'pubsub-js'
+import axios from 'axios';
+import api from '@/config/api/api';
+import createHeader from '@/utils/createHeader';
+import { showFailToast, showSuccessToast } from 'vant';
+import getTime from '@/utils/getTime';
+import useUserInfo from '@/hooks/useUserInfo';
 
 const isShow = ref(false)
 const showPicker1 = ref(false)
@@ -118,17 +129,38 @@ const canteens = [
     { text: '绿榕园', value: '绿榕园' },
     { text: '稻香园', value: '稻香园' },
 ]
-const foods = ref([])
+const foods = ref<Food[]>()
 const onClickLeft = () => isShow.value = false
 const onConfirm = ({ selectedOptions }: any) => {
     form.value.canteen = selectedOptions[0]?.text
     showPicker1.value = false
+    foods.value = []
+    axios.get(`${api.getDataByCanteen}?canteen=${form.value.canteen}`,{'headers': createHeader()}).then(res => {
+        const d: any[] = []
+        for (let i of res.data.data){
+            d.push({text: i.name, value: i.id})
+        }
+        isLoadingFood.value = false
+        foods.value = d
+    })
 }
 const onConfirm2 = ({ selectedOptions }: any) => {
-    form.value.canteen = selectedOptions[0]?.text
+    form.value.food_id = selectedOptions[0]?.value
     showPicker2.value = false
 }
 
+const handleSubmit = () => {
+    const data = toRaw(form.value)
+    data.time = getTime()
+    axios.post(api.uploadMoments,{upload: data},{'headers': createHeader()}).then(res => {
+        showSuccessToast('上传成功')
+        pubsub.publish('insert-new', {
+            ...data,
+            username: useUserInfo()?.username
+        })
+        isShow.value = false
+    }).catch(_ => showFailToast('上传失败'))
+}
 
 const form = ref({
     food_id: 0,
@@ -138,7 +170,7 @@ const form = ref({
     picaddress: null,
     ranking: 0,
     queue: 0,
-    tags: [],
+    tags: '',
     time: ''
 })
 

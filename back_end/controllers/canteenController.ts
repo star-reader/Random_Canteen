@@ -135,7 +135,9 @@ const getDataByCanteen = (req: Request, res: Response) => {
             if (err) {
                 return res.status(500).json({code: 500, msg: 'DatabaseError'}) 
             }
-            connection.query('SELECT * FROM moment', (err: MysqlError | null, results: UserMoment[]) => {
+            const canteen = req.query.canteen
+            if (!canteen) return res.status(400).json({code: 400, msg: 'BadRequest'})
+            connection.query('SELECT * FROM foods WHERE canteen = ?',[canteen], (err: MysqlError | null, results: UserMoment[]) => {
                 connection.release()
                 if (err) {
                     return res.status(500).json({code: 500, msg: 'DatabaseError'}) 

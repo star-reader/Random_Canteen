@@ -26,7 +26,7 @@ type UserMoment = {
     picaddress: string | undefined,
     ranking: number,
     queue: number,
-    tags: string[],
+    tags: string,
     time: Date | string
 }
 
