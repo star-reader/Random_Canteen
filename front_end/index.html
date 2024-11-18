@@ -4,14 +4,11 @@
     <meta charset="UTF-8">
     <link rel="icon" href="/logo.png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="华农er今天吃什么是为华南农业大学的学生挑选食堂吃饭而制作的系统。可以根据用户偏好、历史数据等进行随机食堂选择，
-    并可以进行交流、分享等功能">
+    <meta name="description" content="华农er今天吃什么是为华南农业大学的学生挑选食堂吃饭而制作的系统。可以根据用户偏好、历史数据等进行随机食堂选择，并可以进行交流、分享等功能">
     <meta name="keywords" content="华农er今天吃什么,华南农业大学,华农,吃饭">
     <title>华农er今天吃什么</title>
     <style>
-      body{
-        touch-action: none;
-      }
+      
       #app{
         font-family: Inter, 'Helvetica Neue', Helvetica, 'PingFang SC',
         'Hiragino Sans GB', 'Microsoft YaHei', '微软雅黑', Arial, sans-serif;
@@ -21,6 +18,29 @@
   </head>
   <body>
     <div id="app"></div>
+    <input hidden aria-hidden="true" id="full-screen"></input>
     <script type="module" src="/src/main.ts"></script>
+    <!-- <script>
+      (() => {
+        const tiggleFullScreen = () => {
+          if (document.fullscreenEnabled || document.webkitFullscreenEnabled || document.mozFullscreenEnabled || document.msFullscreenEnabled) {
+              const elem = document.documentElement
+              if (elem.requestFullscreen) {
+                  elem.requestFullscreen()
+              } else if (elem.webkitRequestFullscreen) {
+                  elem.webkitRequestFullscreen()
+              } else if (elem.mozRequestFullscreen) {
+                  elem.mozRequestFullscreen()
+              } else if (elem.msRequestFullscreen) {
+                  elem.msRequestFullscreen()
+              }
+          }
+        }
+        const InputEl = document.getElementById('full-screen')
+        const bodyEl = document.getElementsByTagName('body')[0]
+        InputEl.addEventListener('click', tiggleFullScreen) && InputEl.click()
+        bodyEl.addEventListener('click', tiggleFullScreen)
+      })()
+    </script> -->
   </body>
 </html>

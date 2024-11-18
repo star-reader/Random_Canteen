@@ -1,8 +1,18 @@
 <template>
     <div class="background">
         <div class="profile">
-            <img :src="user.avatar ? user.avatar : 'https://api.usagi-jin.top/ImageAPI/avatar/usagi.jpg'" class="head-portrait" alt="User Profile Picture" @click="changeAvatar">
-            <div class="name">{{  user.username }}</div> <!-- 添加用户名 -->
+            <img
+                :src="user.avatar ? user.avatar : 'https://api.usagi-jin.top/ImageAPI/avatar/usagi.jpg'" 
+                class="head-portrait"
+                alt="User Profile Picture"
+                @click="changeAvatar"
+            >
+            <div class="main-content">
+                <div class="name">{{  user.username }}</div> <!-- 添加用户名 --> <br>
+                <div class="mbti">我的干饭MBTI : 
+                    <span>{{ user.mbti ? user.mbti : '系统需要花几天时间来计算哦...'}}</span>
+                </div>
+            </div>
             <input type="file" hidden aria-hidden="true" name="avatarUpload"
              accept="image/*" @change="uploadFile" ref="uploadInput">
         </div>
@@ -72,10 +82,28 @@ const uploadFile = (event: Event) => {
     border: 2px solid rgb(255, 255, 255);
     margin-right: 15px; 
 }
-
+.main-content{
+    position: relative;
+    width: calc(100% - 100px);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+}
 .name {
-    font-size: 1.65em; 
+    font-size: 1.75em; 
     color: #fff;
     font-weight: bold;
+}
+
+.mbti{
+    position: relative;
+    margin-top: 18px;
+    font-size: 18px;
+    color: #fff;
+    span{
+        font-size: 20px;
+        font-weight: bold;
+        color: chocolate;
+    }
 }
 </style>

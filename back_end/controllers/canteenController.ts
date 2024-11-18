@@ -50,7 +50,7 @@ const login = (req:Request, res: Response) => {
             return res.status(500).json({code: 500, msg: 'DatabaseError'})
         }
         connection.query(
-          'SELECT username, avatar, canteens, preference FROM users WHERE username = ? AND password = ?',
+          'SELECT username, avatar, canteens, mbti FROM users WHERE username = ? AND password = ?',
           [username, password], (err, results) => {
             connection.release()
             if (err) {
@@ -232,7 +232,7 @@ const uploadMoments = (req: Request, res: Response) => {
 const updatePreference = (req: Request, res: Response) => {
     jwtVerify(getAuthorizationByHeader(req.headers.authorization)).then(payload => {
         if (!payload) return res.status(401).json({code: 401, msg: 'Unauthorized'})
-        const { preference } = req.body as {preference: string[]}
+        const { preference } = req.body as {preference: string}
         if (!preference){
             return res.status(400).json({code: 400, msg: 'MissingData'})
         }
@@ -240,7 +240,7 @@ const updatePreference = (req: Request, res: Response) => {
             if (err) {
                 return res.status(500).json({code: 500, msg: 'DatabaseError'})
             }
-            connection.query(`UPDATE user SET preference = ? WHERE username = ?`, 
+            connection.query(`UPDATE users SET mbti = ? WHERE username = ?`, 
               [preference, payload.username],
             (err: MysqlError | null) => {
                 connection.release()
@@ -313,7 +313,7 @@ const uploadAvatar = (req: Request, res: Response) => {
             if (err) {
                 return res.status(500).json({code: 500, msg: 'DatabaseError'})
             }
-            connection.query(`UPDATE user SET avatar = ? WHERE username = ?`,[url, payload.username], 
+            connection.query(`UPDATE users SET avatar = ? WHERE username = ?`,[url, payload.username], 
             (err: MysqlError | null) => {
                 connection.release()
                 if(err) {
