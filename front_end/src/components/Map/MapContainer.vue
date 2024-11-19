@@ -1,16 +1,22 @@
 <template>
-    <div class="info">
-      <div v-for="(item, index) in distanceList" :key="index">
-        <span class="singleName">你距离{{ item.string }}：</span>
-        <span class="singleDistance">{{ item.number }}</span>
-        <span class="singleDistance">米</span>
-      </div>
-      <div>
-        <span class="singleDistance">距离最近的是</span
-        ><span class="nearest">{{ distanceList[0].string }}</span
-        ><span>!</span>
-      </div>
+    <div class="openbutton" id="opbtn" @click="setOpacity2" :style="{ zIndex:zIndex2, opacity: opacity2, transition: 'opacity 0.5s ease' }">
+    展开
+  </div>
+  <div class="info" :style="{ zIndex:zIndex1, opacity: opacity1, transition: 'opacity 0.5s ease' }">
+    <div v-for="(item, index) in distanceList" :key="index">
+      <span class="singleName">你距离{{ item.string }}：</span>
+      <span class="singleDistance">{{ item.number }}</span>
+      <span class="singleDistance">米</span>
     </div>
+    <div>
+      <span class="singleDistance">距离最近的是</span
+      ><span class="nearest">{{ distanceList[0].string }}</span
+      ><span>!</span>
+    </div>
+    <div class="closebutton" id="clbtn" @click="setOpacity1" >
+      收起
+    </div>
+  </div>
   
     <div id="container"></div>
 </template>
@@ -20,6 +26,26 @@ import { nextTick, onMounted, onUnmounted, ref } from "vue";
 import AMapLoader from "@amap/amap-jsapi-loader";
 import useInfoWindow from "@/hooks/canteen/useInfoWindow";
 import { closeToast } from "vant";
+
+const opacity1 = ref(1);
+const opacity2 = ref(0);
+const zIndex1 =ref(100);
+const zIndex2 = ref(0);
+
+const setOpacity1 = () => {
+  opacity1.value = 0;
+  opacity2.value = 1;
+  zIndex1.value = 0;
+  zIndex2.value = 100;
+
+};
+const setOpacity2 = () => {
+  opacity1.value = 1;
+  opacity2.value = 0;
+  zIndex1.value = 100;
+  zIndex2.value = 0;
+
+};
 
 let map = null;
 
@@ -209,4 +235,23 @@ body,
 .singleDistance {
   font-size: 15px;
 }
+
+.openbutton{
+  position: absolute;
+  z-index: 100;
+  background-color: white;
+  box-shadow: 0 2px 6px 0 rgba(114, 124, 245, 0.5);
+  padding: 0.75rem 1.25rem;
+  margin-bottom: 1rem;
+  border-radius: 0.25rem;
+ 
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+}
+.closebutton{
+  color: rgb(0,0,0,.5);
+  
+}
+
 </style>

@@ -174,7 +174,7 @@ onMounted(() => {
             padding: 15px;
             .main-name{
                 position: relative;
-                font-size: 38px;
+                font-size: 34px;
                 font-weight: bold;
                 color: orangered;
                 line-height: calc($font-size + 22px);
