@@ -82,9 +82,16 @@ const showDetail = (i: UserMoment) => {
 onMounted(() => {
 
     pubsub.subscribe('filter-word',(_,word: string) => {
-        filteredData.value = word ? 
-        data.value.filter(item => item.title.includes(word) || item.canteen.includes(word) || item.tags.includes(word)) 
-        : data.value
+        // filteredData.value = word ? 
+        // data.value.filter(item => item.title.includes(word) || item.canteen.includes(word) || item.tags.includes(word)) 
+        // : data.value
+        if (!word){
+            filteredData.value = data.value
+        }else{
+            axios.get(`${api.getQueryMoments}?q=${word}`,{'headers': createHeader()}).then(res => {
+                filteredData.value = res.data.data
+            })
+        }
     })
 })
 

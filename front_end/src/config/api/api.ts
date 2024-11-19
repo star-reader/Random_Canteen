@@ -12,5 +12,6 @@ export default {
     getFoodById: 'https://api.usagi-jin.top/canteen/getFoodById',
     uploadAvatar: 'https://api.usagi-jin.top/canteen/uploadAvatar',
     avatarFile: 'https://api.usagi-jin.top/ImageAPI/upload-v2.php',
-    getMomentsNumber: 'https://api.usagi-jin.top/canteen/getMomentsNumber'
+    getMomentsNumber: 'https://api.usagi-jin.top/canteen/getMomentsNumber',
+    getQueryMoments: 'https://api.usagi-jin.top/canteen/getQueryMoments'
 }
