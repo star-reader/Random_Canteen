@@ -64,10 +64,10 @@ onMounted(() => {
 
         const lockMapBounds = () => {
           let bounds = new AMap.Bounds(
-            113.378906,
-            23.168838,
-            113.344119,
-            23.14629
+            113.385906,
+            23.178838,
+            113.314119,
+            23.12629
           );
           map.setLimitBounds(bounds);
         };
