@@ -1,13 +1,13 @@
 <template>
     <div class="food-card">
         <!-- 每个食物的详细信息 -->
-        <CardItem v-for="i in filteredData" :data="i" @click="() => showDetail(i)" />
+        <CardItem v-for="i in filteredData" :key="randomString(8)" :data="i" @click="() => showDetail(i)" />
     </div>
     <UploadPage />
 </template>
 
 <script lang='ts' setup>
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, toRaw } from 'vue'
 import pubsub from 'pubsub-js'
 import { closeToast, showDialog, showFailToast, showLoadingToast } from 'vant';
 import axios from 'axios';
@@ -15,6 +15,7 @@ import api from '@/config/api/api';
 import UploadPage from './UploadPage.vue'
 import CardItem from './CardItem.vue';
 import createHeader from '@/utils/createHeader';
+import randomString from '@/utils/randomString';
 
 
 const data = ref<UserMoment[]>([])
@@ -31,7 +32,9 @@ onMounted(() => {
         filteredData.value = data.value
         closeToast()
     }).catch(_ => showFailToast('交流版块加载失败！'))
-    pubsub.subscribe('insert-new',(_,d) => data.value.unshift(d))
+    pubsub.subscribe('insert-new',(_,d) => {
+        data.value.unshift(d)
+    })
 })
 
 const showDetail = (i: UserMoment) => {

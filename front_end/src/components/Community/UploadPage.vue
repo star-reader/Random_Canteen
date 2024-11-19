@@ -17,7 +17,7 @@
                 label="食堂"
                 placeholder="选择食堂"
                 @click="showPicker1 = true"
-                :rules="[{ required: true, message: '请选择档口' }]"
+                :rules="[{ required: true, message: '请选择食堂' }]"
                 />
                 <van-popup v-model:show="showPicker1" position="bottom">
                 <van-picker
@@ -27,7 +27,7 @@
                 />
             </van-popup>
             <van-field
-                v-model="form.food_id"
+                v-model="form.food_name"
                 is-link
                 readonly
                 required
@@ -113,7 +113,7 @@ import pubsub from 'pubsub-js'
 import axios from 'axios';
 import api from '@/config/api/api';
 import createHeader from '@/utils/createHeader';
-import { showFailToast, showSuccessToast } from 'vant';
+import { showFailToast, showSuccessToast, showToast } from 'vant';
 import getTime from '@/utils/getTime';
 import useUserInfo from '@/hooks/useUserInfo';
 
@@ -128,6 +128,7 @@ const canteens = [
     { text: '莘园', value: '莘园' },
     { text: '绿榕园', value: '绿榕园' },
     { text: '稻香园', value: '稻香园' },
+    { text: '启林南小吃街', value: '启林南小吃街' },
 ]
 const foods = ref<Food[]>()
 const onClickLeft = () => isShow.value = false
@@ -146,28 +147,37 @@ const onConfirm = ({ selectedOptions }: any) => {
 }
 const onConfirm2 = ({ selectedOptions }: any) => {
     form.value.food_id = selectedOptions[0]?.value
+    form.value.food_name = selectedOptions[0]?.text
     showPicker2.value = false
 }
 
 const handleSubmit = () => {
     const data = toRaw(form.value)
     data.time = getTime()
+    
+    if (!data.canteen || !data.food_id || !data.title || !data.content || !data.queue || !data.ranking){
+        return showToast('请填写必填项后再提交')
+    }
+
     axios.post(api.uploadMoments,{upload: data},{'headers': createHeader()}).then(res => {
         showSuccessToast('上传成功')
         pubsub.publish('insert-new', {
             ...data,
             username: useUserInfo()?.username
         })
+        // @ts-ignore    Type 'string | number' is not assignable
+        Object.keys(form.value).forEach(k => form.value[k as keyof object] = typeof form.value[k as keyof object] === 'string' ? '' : 0)
         isShow.value = false
     }).catch(_ => showFailToast('上传失败'))
 }
 
 const form = ref({
+    food_name: '',
     food_id: 0,
     canteen: '',
     title: '',
     content: '',
-    picaddress: null,
+    picaddress: '',
     ranking: 0,
     queue: 0,
     tags: '',

@@ -1,11 +1,6 @@
 <template>
     <div class="page-wrapper">
-        <van-nav-bar
-            title="交流中心"
-            left-text="返回"
-            left-arrow
-            @click-left="onClickLeft"
-        />
+        <van-nav-bar title="交流中心" />
         <SearchContainer />
         <FoodCard />
         <ButtonContainer />
@@ -17,7 +12,6 @@ import SearchContainer from '@/components/Community/SearchContainer.vue'
 import FoodCard from '@/components/Community/FoodCard.vue'
 import ButtonContainer from '@/components/Community/ButtonContainer.vue';
 
-const onClickLeft = () => history.back()
 </script>
 
 <style lang='less' scoped>

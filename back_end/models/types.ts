@@ -46,7 +46,8 @@ type selfRule = {
     noCurrent: false | string,
     queue: boolean,
     ranking: boolean,
-    noRecent: boolean
+    noRecent: boolean,
+    preferCanteen: false | string
 }
 
 type UserInfo = {

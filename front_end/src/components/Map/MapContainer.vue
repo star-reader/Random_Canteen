@@ -30,6 +30,7 @@ const distanceList = ref([
   { string: "莘园", number: null },
   { string: "荷园", number: null },
   { string: "稻香园", number: null },
+  { string: "小吃街", number: null },
 ]);
 let globalDistanceList = []
 
@@ -93,9 +94,10 @@ onMounted(() => {
                 [113.357213, 23.163316],
                 [113.367758, 23.160487],
                 [113.370245, 23.163324],
+                [113.368524, 23.157498]
               ]
 
-              for (let i = 0; i < 6; i++) {
+              for (let i = 0; i < LngLatList.length; i++) {
                 const dis = AMap.GeometryUtil.distance(result.position, [
                   LngLatList[i][0],
                   LngLatList[i][1],
@@ -148,6 +150,11 @@ onMounted(() => {
                   map, AMap, new AMap.LngLat(113.370245, 23.163324),
                   "稻香园", 'dxo', globalDistanceList,
                   "<img src='http://tpc.googlesyndication.com/simgad/5843493769827749134'>地址：广州市天河区五山路483号华南农业大学启林北区",
+              )
+              useInfoWindow(
+                  map, AMap, new AMap.LngLat(113.368524, 23.157498),
+                  "小吃街", 'xcj', globalDistanceList,
+                  "<img src='http://tpc.googlesyndication.com/simgad/5843493769827749134'>地址：广州市天河区五山路483号华南农业大学启林南操场外马路",
               )
             } else {
               onError(result);

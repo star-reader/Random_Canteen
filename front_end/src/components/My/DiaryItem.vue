@@ -7,7 +7,7 @@
                             round
                             width="26px"
                             height="26px"
-                            :src="user.avatar"
+                            :src="user.avatar ? user.avatar : 'https://api.usagi-jin.top/ImageAPI/avatar/usagi.jpg'"
                         />
                     </div>
                     <div class="username">{{ user.username }}</div>
@@ -36,7 +36,7 @@
                         <div class="label">评分</div>
                         <div class="minding">
                             <van-rate
-                                v-model="rating" 
+                                v-model="ranking" 
                                 readonly color="#ffd21e"
                                 void-icon="star"
                                 void-color="#eee" 
@@ -69,7 +69,7 @@ import createHeader from '@/utils/createHeader';
 import useUserInfo from '@/hooks/useUserInfo';
 
 
-const rating = ref(0)
+const ranking = ref(0)
 const queue = ref(0)
 
 interface IProps {
@@ -86,7 +86,7 @@ onMounted(() => {
         axios.get(`${api.getFoodById}?id=${props.data.food_id}`,{'headers': createHeader()}).then(res => {
             if (res.data){
                 foodData.value = res.data.data
-                rating.value = res.data.data.rating
+                ranking.value = res.data.data.ranking
                 queue.value = res.data.data.queue
             }
         })
