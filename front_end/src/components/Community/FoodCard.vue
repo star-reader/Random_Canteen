@@ -1,7 +1,7 @@
 <template>
     <div class="food-card">
     <!-- 每个食物的详细信息 -->
-        <CardItem v-for="i in filteredData" :key="randomString(8)" :data="i" @click="() => showDetail(i)" />
+        <CardItem v-for="i in filteredData" :key="i.id" :data="i" @click="() => showDetail(i)" />
     </div>
     <UploadPage />
 </template>
@@ -23,14 +23,12 @@ const filteredData = ref<UserMoment[]>()
 
 const getMoments = (isFromRefresh: boolean) => {
     // 如果正常加载,page ++， 如果是下拉刷新，page =1
-    axios.get(`${api.getMoments}?page=${isFromRefresh ? 1 : page}`,{'headers': createHeader()}).then(res => {
+    axios.get(`${api.getMoments}?page=${page}`,{'headers': createHeader()}).then(res => {
         data.value = res.data.data.reverse()
         filteredData.value = data.value
         closeToast()
         if (isFromRefresh){
             pubsub.publish('refresh-complete', 1)
-        }else{
-            page++
         }
     }).catch(_ => showFailToast('交流版块加载失败！'))
 }
@@ -74,7 +72,7 @@ onMounted(() => {
     width: 100%;
     top: 0;
     // 100px是顶部标题和搜索栏，60是下面“我要发布”的组件
-    height: calc(100% - 100px - 60px);
+    height: 100%;
     overflow: hidden auto;
 }
 </style>

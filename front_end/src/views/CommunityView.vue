@@ -3,9 +3,7 @@
         <van-nav-bar title="交流中心" />
         <SearchContainer />
         <van-pull-refresh v-model="loading" @refresh="onRefresh">
-            <div class="main-card-view">
-                <FoodCard />
-            </div>
+            <FoodCard />
         </van-pull-refresh>
         
         <ButtonContainer />
@@ -31,7 +29,3 @@ onMounted(() => {
 })
 
 </script>
-
-<style lang='less' scoped>
-
-</style>
