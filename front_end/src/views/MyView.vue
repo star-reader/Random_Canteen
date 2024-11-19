@@ -6,7 +6,7 @@
             <ServiceMenu />
         </div>
         <div class="attribute">
-            版本 v1.2.5 (public beta) &nbsp;&nbsp; 上次更新：2024-11-19 <br/>
+            版本 v1.2.6 (public beta) &nbsp;&nbsp; 上次更新：2024-11-19 <br/>
             Copyright &copy; 不想排队@华农er今天吃什么 <br/>
             2024-2024 All Rights Reserved
         </div>
