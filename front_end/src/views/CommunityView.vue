@@ -6,9 +6,9 @@
             </template>
         </van-nav-bar>
         <SearchContainer />
-        <van-pull-refresh v-model="loading" @refresh="onRefresh">
-            <FoodCard />
-        </van-pull-refresh>
+        <!-- <van-pull-refresh v-model="loading" @refresh="onRefresh"> -->
+        <FoodCard />
+        <!-- </van-pull-refresh> -->
         <!-- <ButtonContainer /> -->
     </div>
 </template>

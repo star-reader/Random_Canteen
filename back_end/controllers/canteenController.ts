@@ -176,6 +176,49 @@ const getMoments = (req: Request, res: Response) => {
     })
 }
 
+const getAllMoments = (req: Request, res: Response) => {
+    jwtVerify(getAuthorizationByHeader(req.headers.authorization)).then(payload => {
+        if (!payload) return res.status(401).json({code: 401, msg: 'Unauthorized'})
+        getPool().getConnection((err, connection) => {
+            if (err) {
+                return res.status(500).json({code: 500, msg: 'DatabaseError'})
+            }
+            connection.query(`SELECT * FROM moment`, (err: MysqlError | null, results: UserMoment[]) => {
+                connection.release()
+                if (err) {
+                    return res.status(500).json({code: 500, msg: 'DatabaseError'}) 
+                }
+                return res.json({code: 200, msg: 'Success', data: results})
+            })
+        })
+    }).catch(_ => {
+        return res.status(401).json({code: 401, msg: 'Unauthorized'})
+    })
+}
+
+const getQueryMoments = (req: Request, res: Response) => {
+    jwtVerify(getAuthorizationByHeader(req.headers.authorization)).then(payload => {
+        if (!payload) return res.status(401).json({code: 401, msg: 'Unauthorized'})
+        const q = req.query.q
+        if (!q) return res.status(400).json({code: 400, msg: 'BadRequest'})
+        getPool().getConnection((err, connection) => {
+            if (err) {
+                return res.status(500).json({code: 500, msg: 'DatabaseError'})
+            }
+            connection.query(`SELECT * FROM moment WHERE title like %?% OR canteen like %?% OR tags like %?% ORDER BY id DESC LIMIT 10`,
+                [q,q,q], (err: MysqlError | null, results: UserMoment[]) => {
+                connection.release()
+                if (err) {
+                    return res.status(500).json({code: 500, msg: 'DatabaseError'}) 
+                }
+                return res.json({code: 200, msg: 'Success', data: results})
+            })
+        })
+    }).catch(_ => {
+        return res.status(401).json({code: 401, msg: 'Unauthorized'})
+    })
+}
+
 const getMomentsNumber = (req: Request, res: Response) => {
     jwtVerify(getAuthorizationByHeader(req.headers.authorization)).then(payload => {
         if (!payload) return res.status(401).json({code: 401, msg: 'Unauthorized'})
@@ -360,5 +403,7 @@ export default {
   updatePreference,
   uploadHistory, getHistory,
   getFoodById, uploadAvatar,
-  getMomentsNumber
+  getMomentsNumber,
+  getAllMoments,
+  getQueryMoments
 }

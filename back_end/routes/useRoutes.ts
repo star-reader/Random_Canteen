@@ -15,5 +15,6 @@ router.get('/getHistory', userController.getHistory)
 router.get('/getFoodById', userController.getFoodById)
 router.get('/getMomentsNumber', userController.getMomentsNumber)
 router.post('/uploadAvatar', userController.uploadAvatar)
+router.get('/getQueryMoments', userController.getQueryMoments)
 
 export default router
