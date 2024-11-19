@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { getPool } from '../main'
+import { getPool, MAX_LOAD_PRE_PAGE } from '../main'
 import { jwtSign, jwtVerify } from '../services/jwtVerify'
 import { getAuthorizationByHeader, getRandomString } from '../services/utils'
 import type { MysqlError } from 'mysql'
@@ -153,11 +153,17 @@ const getDataByCanteen = (req: Request, res: Response) => {
 const getMoments = (req: Request, res: Response) => {
     jwtVerify(getAuthorizationByHeader(req.headers.authorization)).then(payload => {
         if (!payload) return res.status(401).json({code: 401, msg: 'Unauthorized'})
+        let page = parseInt(req.query.page as string)
+        if (!page){
+            page = 1
+        }
         getPool().getConnection((err, connection) => {
             if (err) {
                 return res.status(500).json({code: 500, msg: 'DatabaseError'}) 
             }
-            connection.query('SELECT * FROM moment', (err: MysqlError | null, results: UserMoment[]) => {
+            const min = (page - 1)*MAX_LOAD_PRE_PAGE;
+            const max = min + MAX_LOAD_PRE_PAGE - 1;
+            connection.query('SELECT * FROM moment LIMIT ?,?',[min, max], (err: MysqlError | null, results: UserMoment[]) => {
                 connection.release()
                 if (err) {
                     return res.status(500).json({code: 500, msg: 'DatabaseError'}) 

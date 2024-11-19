@@ -17,17 +17,20 @@ import CardItem from './CardItem.vue';
 import createHeader from '@/utils/createHeader';
 import randomString from '@/utils/randomString';
 
-const loading = ref(false)
+let page = 1 // 加载的页数
 const data = ref<UserMoment[]>([])
 const filteredData = ref<UserMoment[]>()
 
 const getMoments = (isFromRefresh: boolean) => {
-    axios.get(api.getMoments,{'headers': createHeader()}).then(res => {
+    // 如果正常加载,page ++， 如果是下拉刷新，page =1
+    axios.get(`${api.getMoments}?page=${isFromRefresh ? 1 : page}`,{'headers': createHeader()}).then(res => {
         data.value = res.data.data.reverse()
         filteredData.value = data.value
         closeToast()
         if (isFromRefresh){
-            pubsub.publish('refresh-complete',1)
+            pubsub.publish('refresh-complete', 1)
+        }else{
+            page++
         }
     }).catch(_ => showFailToast('交流版块加载失败！'))
 }
