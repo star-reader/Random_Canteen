@@ -14,7 +14,7 @@
                 </div>
                 <div class="time">{{ props.data.time }}</div>
             </div>
-            <div class="main-data-area">
+            <div v-show="foodData?.canteen" class="main-data-area">            
                 <div class="img-area">
                     <van-image
                         width="80px"
@@ -56,6 +56,18 @@
                         </div>
                     </div>
                 </div>
+            </div>
+            <div v-show="!foodData?.canteen" class="main-data-area">
+                <van-skeleton>
+                    <template #template>
+                        <div :style="{ display: 'flex', width: '100%', marginTop:'20px' }">
+                            <van-skeleton-image />
+                            <div :style="{ position: 'absolute', 'width': 'calc(80% - 100px)', marginLeft: '12px', left: '130px', top: '50px' }">
+                                <van-skeleton-paragraph v-for="_ in new Array(5)" />
+                            </div>
+                        </div>
+                    </template>
+                </van-skeleton>
             </div>
         </div>
 </template>

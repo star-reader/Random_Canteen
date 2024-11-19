@@ -1,6 +1,6 @@
 <template>
     <div class="food-card">
-        <!-- 每个食物的详细信息 -->
+    <!-- 每个食物的详细信息 -->
         <CardItem v-for="i in filteredData" :key="randomString(8)" :data="i" @click="() => showDetail(i)" />
     </div>
     <UploadPage />
@@ -17,9 +17,21 @@ import CardItem from './CardItem.vue';
 import createHeader from '@/utils/createHeader';
 import randomString from '@/utils/randomString';
 
-
+const loading = ref(false)
 const data = ref<UserMoment[]>([])
 const filteredData = ref<UserMoment[]>()
+
+const getMoments = (isFromRefresh: boolean) => {
+    axios.get(api.getMoments,{'headers': createHeader()}).then(res => {
+        data.value = res.data.data.reverse()
+        filteredData.value = data.value
+        closeToast()
+        if (isFromRefresh){
+            pubsub.publish('refresh-complete',1)
+        }
+    }).catch(_ => showFailToast('交流版块加载失败！'))
+}
+
 
 onMounted(() => {
     showLoadingToast({
@@ -27,14 +39,11 @@ onMounted(() => {
         'duration': 3000,
         forbidClick: true
     })
-    axios.get(api.getMoments,{'headers': createHeader()}).then(res => {
-        data.value = res.data.data.reverse()
-        filteredData.value = data.value
-        closeToast()
-    }).catch(_ => showFailToast('交流版块加载失败！'))
+    getMoments(false)
     pubsub.subscribe('insert-new',(_,d) => {
         data.value.unshift(d)
     })
+    pubsub.subscribe('request-pull',() => getMoments(true))
 })
 
 const showDetail = (i: UserMoment) => {
