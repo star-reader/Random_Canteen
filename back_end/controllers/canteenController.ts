@@ -205,7 +205,7 @@ const getQueryMoments = (req: Request, res: Response) => {
             if (err) {
                 return res.status(500).json({code: 500, msg: 'DatabaseError'})
             }
-            connection.query(`SELECT * FROM moment WHERE title like %?% OR canteen like %?% OR tags like %?% ORDER BY id DESC LIMIT 10`,
+            connection.query(`SELECT * FROM moment WHERE title LIKE CONCAT('%',?, '%') OR canteen LIKE CONCAT('%',?, '%') OR tags LIKE CONCAT('%',?, '%') ORDER BY id DESC LIMIT 10`,
                 [q,q,q], (err: MysqlError | null, results: UserMoment[]) => {
                 connection.release()
                 if (err) {

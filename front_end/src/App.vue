@@ -13,12 +13,6 @@ import { onMounted } from 'vue';
 import NavigationTabBar from './layout/NavBar/NavigationTabBar.vue';
 import useGetToken from './hooks/useGetToken';
 
-interface LoginCert {
-    username: string,
-    password: string,
-    seed: string
-}
-
 onMounted(() => {
     if (location.pathname === '/login' || location.pathname === '/register') return
     useGetToken()

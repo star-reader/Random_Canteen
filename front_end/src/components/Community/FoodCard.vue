@@ -56,7 +56,7 @@ const getMoments = (isFromRefresh: boolean) => {
         if (isFromRefresh){
             pubsub.publish('refresh-complete', 1)
         }
-        if (4*(currentPage.value -1) > totalPage.value){
+        if (4*(currentPage.value) >= totalPage.value){
             finished.value = true
         }
     }).catch(_ => showFailToast('交流版块加载失败！'))
@@ -88,8 +88,14 @@ onMounted(() => {
         if (!word){
             filteredData.value = data.value
         }else{
+            showLoadingToast({
+                'message': '加载中...',
+                'duration': 3000,
+                forbidClick: true
+            })
             axios.get(`${api.getQueryMoments}?q=${word}`,{'headers': createHeader()}).then(res => {
                 filteredData.value = res.data.data
+                closeToast()
             })
         }
     })

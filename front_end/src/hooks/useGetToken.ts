@@ -3,12 +3,19 @@ import router from "@/router";
 import { dataDecrypt } from "@/utils/crypto";
 import axios from "axios";
 
+interface LoginCert {
+    username: string,
+    password: string,
+    seed: string
+}
+
+
 export default () => {
     const _cert = localStorage.getItem('cert')
     if (!_cert) {
         return router.push('/login')
     }else{
-        let cert: any
+        let cert: LoginCert
         try {
             cert = JSON.parse(dataDecrypt(_cert))
         } catch (error) {
