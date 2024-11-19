@@ -13,6 +13,7 @@ router.post('/updatePreference', userController.updatePreference)
 router.post('/uploadHistory', userController.uploadHistory)
 router.get('/getHistory', userController.getHistory)
 router.get('/getFoodById', userController.getFoodById)
+router.get('/getMomentsNumber', userController.getMomentsNumber)
 router.post('/uploadAvatar', userController.uploadAvatar)
 
 export default router

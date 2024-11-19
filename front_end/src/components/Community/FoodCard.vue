@@ -2,12 +2,16 @@
     <div class="food-card">
     <!-- 每个食物的详细信息 -->
         <CardItem v-for="i in filteredData" :key="i.id" :data="i" @click="() => showDetail(i)" />
+        <van-pagination class="pagination" v-model="currentPage"
+            :total-items="totalPage" :items-per-page="4" @change="() => getMoments(false)"
+        />
+        <van-empty v-if="!filteredData?.length" description="暂无内容" />
     </div>
     <UploadPage />
 </template>
 
 <script lang='ts' setup>
-import { onMounted, ref, toRaw } from 'vue'
+import { onMounted, ref } from 'vue'
 import pubsub from 'pubsub-js'
 import { closeToast, showDialog, showFailToast, showLoadingToast } from 'vant';
 import axios from 'axios';
@@ -17,14 +21,20 @@ import CardItem from './CardItem.vue';
 import createHeader from '@/utils/createHeader';
 import randomString from '@/utils/randomString';
 
-let page = 1 // 加载的页数
+let currentPage = ref(1) // 加载的页数
+const totalPage = ref(1)
 const data = ref<UserMoment[]>([])
 const filteredData = ref<UserMoment[]>()
 
 const getMoments = (isFromRefresh: boolean) => {
+    showLoadingToast({
+        'message': '加载中...',
+        'duration': 3000,
+        forbidClick: true
+    })
     // 如果正常加载,page ++， 如果是下拉刷新，page =1
-    axios.get(`${api.getMoments}?page=${page}`,{'headers': createHeader()}).then(res => {
-        data.value = res.data.data.reverse()
+    axios.get(`${api.getMoments}?page=${currentPage.value}`,{'headers': createHeader()}).then(res => {
+        data.value = res.data.data
         filteredData.value = data.value
         closeToast()
         if (isFromRefresh){
@@ -33,13 +43,9 @@ const getMoments = (isFromRefresh: boolean) => {
     }).catch(_ => showFailToast('交流版块加载失败！'))
 }
 
-
-onMounted(() => {
-    showLoadingToast({
-        'message': '加载中...',
-        'duration': 3000,
-        forbidClick: true
-    })
+onMounted(async () => {
+    
+    totalPage.value = (await axios.get(api.getMomentsNumber,{'headers': createHeader()})).data.data
     getMoments(false)
     pubsub.subscribe('insert-new',(_,d) => {
         data.value.unshift(d)

@@ -1,6 +1,7 @@
 <template>
     <div class="food-card">
         <DiaryItem v-for="i in data" :data="i" />
+        <van-empty v-if="!data?.length" description="还没有内容" />
     </div>
 </template>
 

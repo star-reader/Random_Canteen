@@ -3,7 +3,7 @@
         <!-- TODO -->
         <van-nav-bar
             title="写评价"
-            left-text="Back"
+            left-text="返回"
             left-arrow
             @click-left="onClickLeft"
         />

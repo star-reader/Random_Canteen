@@ -11,5 +11,6 @@ export default {
     getHistory: 'https://api.usagi-jin.top/canteen/getHistory',
     getFoodById: 'https://api.usagi-jin.top/canteen/getFoodById',
     uploadAvatar: 'https://api.usagi-jin.top/canteen/uploadAvatar',
-    avatarFile: 'https://api.usagi-jin.top/ImageAPI/upload-v2.php'
+    avatarFile: 'https://api.usagi-jin.top/ImageAPI/upload-v2.php',
+    getMomentsNumber: 'https://api.usagi-jin.top/canteen/getMomentsNumber'
 }

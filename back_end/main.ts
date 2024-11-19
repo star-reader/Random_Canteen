@@ -20,7 +20,7 @@ const getPool = () => pool
 
 
 const SERVER_PORT = 8041
-const MAX_LOAD_PRE_PAGE = 10
+const MAX_LOAD_PRE_PAGE = 3
 
 app.listen(SERVER_PORT, () => {
     console.log(`Server is running on port ${SERVER_PORT}`)
