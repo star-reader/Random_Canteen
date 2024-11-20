@@ -36,7 +36,7 @@ onMounted(() => {
     width: 100%;
     top: 0;
     // 100px是顶部标题和搜索栏，60是下面“我要发布”的组件
-    height: 100%;
+    height: calc(100% - 40px);
     overflow: hidden auto;
 }
 
