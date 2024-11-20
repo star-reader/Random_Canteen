@@ -6,19 +6,35 @@ import type { MysqlError } from 'mysql'
 import type { Food, JWTPayload, UserHistory, UserMoment } from '../models/types'
 import randomGetFood from '../services/randomGetFood'
 import authorization from '../services/authorization'
+import { dataDecrypt } from '../services/crypto'
 
 
 
 const register = (req:Request, res: Response): void => {
     const {username, password, key, offset} = req.body
     const keyPairId = req.body['key-pair-id']
-    if (!username || !password || !key || !keyPairId || !offset) {
+    const inviteCode = req.body.inviteCode
+    if (!username || !password || !key || !keyPairId || !offset || !inviteCode) {
         res.status(400).json({code: 400, msg: 'MissingData'})
+        return
+    }
+    if (inviteCode !== '537Usagi21'){
+        res.status(401).json({code: 401, msg: 'Unauthorized'})
         return
     }
     // 进行授权校验
     if (!authorization(key, keyPairId, offset)){
-        res.status(403).json({code: 401, msg: 'Unauthorized'})
+        res.status(401).json({code: 401, msg: 'Unauthorized'})
+        return
+    }
+    try {
+        let _password = dataDecrypt(password)
+        if (!_password || _password.length == 0){
+            res.status(401).json({code: 401, msg: 'Unauthorized'})
+            return
+        }
+    } catch (error) {
+        res.status(401).json({code: 401, msg: 'Unauthorized'})
         return
     }
     getPool().getConnection((err, connection) => {
@@ -54,7 +70,7 @@ const login = (req:Request, res: Response) => {
         return
     }
     if (!authorization(key, keyPairId, offset)){
-        res.status(403).json({code: 401, msg: 'Unauthorized'})
+        res.status(401).json({code: 401, msg: 'Unauthorized'})
         return
     }
     getPool().getConnection((err, connection) => {

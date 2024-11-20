@@ -7,19 +7,26 @@
     <div class="main-text">注册系统</div>
         <van-cell-group inset>
             <van-field
-            v-model="form.username"
-            name="Username"
-            label="用户名"
-            placeholder="用户名"
-            :rules="[{ required: true, message: '请填写用户名' }]"
+                v-model="form.username"
+                name="Username"
+                label="用户名"
+                placeholder="用户名"
+                :rules="[{ required: true, message: '请填写用户名' }]"
             />
             <van-field
-            v-model="form.password"
-            type="password"
-            name="密码"
-            label="密码"
-            placeholder="密码"
-            :rules="[{ required: true, message: '请填写密码' }]"
+                v-model="form.password"
+                type="password"
+                name="password"
+                label="密码"
+                placeholder="密码"
+                :rules="[{ required: true, message: '请填写密码' }]"
+            />
+            <van-field
+                v-model="inviteCode"
+                name="inviteCode"
+                label="邀请码"
+                placeholder="系统内测中，请填写邀请码"
+                :rules="[{ required: true, message: '请填写邀请码' }]"
             />
             <van-field v-model="code" center clearable label="验证码" placeholder="">
                 <template #button>
@@ -63,6 +70,7 @@ interface LoginForm {
 const identifyCodes = "1234567890abcdefjhijklinopqrsduvwxyz"
 const code = ref('')
 let realCode = ref('')
+const inviteCode = ref('')
 
 const form = ref<LoginForm>({
     username: '',
@@ -82,7 +90,7 @@ const onSubmit = () => {
     const key = dataEncrypt(keyPairId)
     const offset = getHourOffset()
 
-    axios.post(api.register, { ...data, 'key-pair-id': keyPairId, key, offset }).then(res => {
+    axios.post(api.register, { ...data, 'key-pair-id': keyPairId, key, offset, inviteCode: inviteCode.value }).then(_ => {
         showSuccessToast('注册成功！')
         router.push('/login')
     }).catch(_ => showFailToast('注册失败！用户已存在'))
