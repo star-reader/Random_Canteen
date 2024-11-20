@@ -5,13 +5,20 @@ import { getAuthorizationByHeader, getRandomString } from '../services/utils'
 import type { MysqlError } from 'mysql'
 import type { Food, JWTPayload, UserHistory, UserMoment } from '../models/types'
 import randomGetFood from '../services/randomGetFood'
+import authorization from '../services/authorization'
 
 
 
 const register = (req:Request, res: Response): void => {
-    const {username, password} = req.body
-    if (!username || !password) {
+    const {username, password, key, offset} = req.body
+    const keyPairId = req.body['key-pair-id']
+    if (!username || !password || !key || !keyPairId || !offset) {
         res.status(400).json({code: 400, msg: 'MissingData'})
+        return
+    }
+    // 进行授权校验
+    if (!authorization(key, keyPairId, offset)){
+        res.status(403).json({code: 401, msg: 'Unauthorized'})
         return
     }
     getPool().getConnection((err, connection) => {
@@ -40,9 +47,14 @@ const register = (req:Request, res: Response): void => {
 }
 
 const login = (req:Request, res: Response) => {
-    const {username, password} = req.body
-    if (!username || !password) {
+    const {username, password, key, offset} = req.body
+    const keyPairId = req.body['key-pair-id']
+    if (!username || !password || !key || !keyPairId || !offset) {
         res.status(400).json({code: 400, msg: 'MissingData'})
+        return
+    }
+    if (!authorization(key, keyPairId, offset)){
+        res.status(403).json({code: 401, msg: 'Unauthorized'})
         return
     }
     getPool().getConnection((err, connection) => {
@@ -355,7 +367,8 @@ const getHistory = (req: Request, res: Response) => {
             if (err) {
                 return res.status(500).json({code: 500, msg: 'DatabaseError'})
             }
-            connection.query(`SELECT * FROM history WHERE username = ?`,[payload.username], 
+            const listView = req.query.listView as string | undefined
+            connection.query(listView ? `SELECT * FROM history WHERE username = ? LIMIT 10` : `SELECT * FROM history WHERE username = ?`,[payload.username], 
             (err: MysqlError | null, result: UserHistory[]) => {
                 connection.release()
                 if(err) {

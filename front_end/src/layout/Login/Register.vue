@@ -52,6 +52,8 @@ import { showFailToast, showSuccessToast, showToast } from 'vant';
 import axios from 'axios';
 import api from '@/config/api/api';
 import { dataEncrypt } from '@/utils/crypto';
+import randomString from '@/utils/randomString';
+import getHourOffset from '@/utils/getHourOffset';
 
 interface LoginForm {
     username: string,
@@ -75,7 +77,12 @@ const onSubmit = () => {
     const data = toRaw(form.value)
     data.password = dataEncrypt(data.password)
     showToast('注册中')
-    axios.post(api.register, data).then(res => {
+    // 防止恶意注册，key-pair-id为随机生成的字符串，key为AES加密后的字符串，offset为基于时间的唯一key，用于校验
+    const keyPairId = randomString(12)
+    const key = dataEncrypt(keyPairId)
+    const offset = getHourOffset()
+
+    axios.post(api.register, { ...data, 'key-pair-id': keyPairId, key, offset }).then(res => {
         showSuccessToast('注册成功！')
         router.push('/login')
     }).catch(_ => showFailToast('注册失败！用户已存在'))

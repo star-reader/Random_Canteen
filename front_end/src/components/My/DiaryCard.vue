@@ -21,7 +21,7 @@ onMounted(() => {
         'duration': 3000,
         forbidClick: true
     })
-    axios.get(api.getHistory,{'headers': createHeader()}).then(res => {
+    axios.get(`${api.getHistory}?listView=diary`,{'headers': createHeader()}).then(res => {
         data.value = res.data.data.reverse()
         closeToast()
     })

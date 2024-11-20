@@ -1,6 +1,8 @@
 import api from "@/config/api/api";
 import router from "@/router";
-import { dataDecrypt } from "@/utils/crypto";
+import { dataDecrypt, dataEncrypt } from "@/utils/crypto";
+import getHourOffset from "@/utils/getHourOffset";
+import randomString from "@/utils/randomString";
 import axios from "axios";
 
 interface LoginCert {
@@ -21,9 +23,14 @@ export default () => {
         } catch (error) {
             return router.push('/login')
         }
+        const keyPairId = randomString(12)
+        const key = dataEncrypt(keyPairId)
+        const offset = getHourOffset()
         axios.post(api.login,{
             username: cert.username,
-            password: cert.password
+            password: cert.password,
+            'key-pair-id': keyPairId,
+            key, offset
         }).then(res => {
             const userData = res.data.data
             const token = res.data.token

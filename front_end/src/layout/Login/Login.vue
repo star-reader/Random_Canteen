@@ -56,6 +56,8 @@ import foodBg from '@/assets/food/food.png'
 import { showDialog } from 'vant';
 import api from '@/config/api/api';
 import { dataEncrypt } from '@/utils/crypto';
+import randomString from '@/utils/randomString';
+import getHourOffset from '@/utils/getHourOffset';
 
 interface LoginForm {
     username: string,
@@ -79,7 +81,10 @@ const onLogin = () => {
     const data = toRaw(form.value)
     showToast('登录中...')
     data.password = dataEncrypt(data.password)
-    axios.post(api.login,{...data}).then(res => {
+    const keyPairId = randomString(12)
+    const key = dataEncrypt(keyPairId)
+    const offset = getHourOffset()
+    axios.post(api.login,{...data, 'key-pair-id': keyPairId, key, offset}).then(res => {
         showSuccessToast('登录成功')
         const token = res.data.token
         localStorage.setItem('token',token)
