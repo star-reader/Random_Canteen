@@ -1,10 +1,11 @@
 <template>
     <NavigationTabBar />
-
+    
     <router-view v-slot="{ Component }">
-        <KeepAlive>
-            <component :is="Component" :key="$route.name" />
-        </KeepAlive>
+        <keep-alive>
+          <component v-if="$route.meta.keepAlive" :key="$route.name" :is="Component" />
+        </keep-alive>
+        <component v-if="!$route.meta.keepAlive" :key="$route.name" :is="Component" />
     </router-view>
 </template>
 

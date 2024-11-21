@@ -17,37 +17,58 @@ const router = createRouter({
     {
       name: 'Index',
       path: '/index',
-      component: HomeView
+      component: HomeView,
+      meta: {
+        'KeepAlive': true
+      }
     },
     {
       name: 'Map',
       path: '/map',
-      component: MapView
+      component: MapView,
+      meta: {
+        'KeepAlive': true
+      }
     },
     {
       name: 'Community',
       path: '/community',
-      component: CommunityView
+      component: CommunityView,
+      meta: {
+        'KeepAlive': true
+      }
     },
     {
       name: 'My',
       path: '/my',
-      component: MyView
+      component: MyView,
+      meta: {
+        'KeepAlive': true
+      }
     },
     {
       name: 'Diary',
       path: '/diary',
-      component: Diary
+      component: Diary,
+      meta: {
+        'KeepAlive': false
+      }
     },
     {
       name: 'Login',
       path: '/login',
-      component: Login
+      component: Login,
+      meta: {
+        'KeepAlive': false
+      }
     },
     {
       name: 'Register',
       path: '/register',
-      component: Register
+      component: Register,
+      meta: {
+        'KeepAlive': false
+      }
     }
   ]
 })
