@@ -86,18 +86,18 @@ onMounted(() => {
           center: [113.357583, 23.15765],
         })
 
-        map.setZooms([16, 19]);
+        map.setZooms([10, 19]);
 
-        const lockMapBounds = () => {
-          let bounds = new AMap.Bounds(
-            113.385906,
-            23.178838,
-            113.314119,
-            23.12629
-          );
-          map.setLimitBounds(bounds);
-        };
-        lockMapBounds();
+        // const lockMapBounds = () => {
+        //   let bounds = new AMap.Bounds(
+        //     113.385906,
+        //     23.178838,
+        //     113.314119,
+        //     23.12629
+        //   );
+        //   map.setLimitBounds(bounds);
+        // };
+        // lockMapBounds();
 
         // 定位
         AMap.plugin("AMap.Geolocation", () => {
