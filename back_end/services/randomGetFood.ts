@@ -27,13 +27,10 @@ export default (food: Food[], selfRule: selfRule , history?: UserHistory[]) => {
         }
     
         // 进行随机数筛选
-        if (selfRule.queue){
+        if (selfRule.queue || selfRule.ranking){
             // 只从排名前5名的结果里面选
-            return filteredFood[Math.floor(Math.random() * 15)]
-        }
-        if (selfRule.ranking){
-            // 只从排名前10名的结果里面选
-            return filteredFood[Math.floor(Math.random() * 20)]
+            const length = filteredFood.length >= 15 ? 15 : filteredFood.length
+            return filteredFood[Math.floor(Math.random() * length)]
         }
     }
     return filteredFood[Math.floor(Math.random() * filteredFood.length)]
