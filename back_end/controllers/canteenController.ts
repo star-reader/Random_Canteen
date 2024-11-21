@@ -385,7 +385,7 @@ const getHistory = (req: Request, res: Response) => {
                 return res.status(500).json({code: 500, msg: 'DatabaseError'})
             }
             const listView = req.query.listView as string | undefined
-            connection.query(listView ? `SELECT * FROM history WHERE username = ? LIMIT 10` : `SELECT * FROM history WHERE username = ?`,[payload.username], 
+            connection.query(listView ? `SELECT * FROM history WHERE username = ? LIMIT 10` : `SELECT * FROM history WHERE username = ? LIMIT 5`,[payload.username], 
             (err: MysqlError | null, result: UserHistory[]) => {
                 connection.release()
                 if(err) {
