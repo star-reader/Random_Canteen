@@ -1,16 +1,12 @@
 process.title = 'random_canteen_backend'
 
 import express from 'express'
-import cors from 'cors'
 import bodyParser from 'body-parser'
 import mysql from 'mysql'
 import router from './routes/useRoutes'
 import mysqlConfig from './config/mysql/mysql'
 
 const app = express()
-// app.use(cors({
-//     'origin': 'https://food.scauaie.cn,https://usagi-jin.top,http://localhost:5173'
-// }))
 app.use(bodyParser.json())
 app.use('/canteen', router)
 

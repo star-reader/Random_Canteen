@@ -16,7 +16,7 @@ export default (map: any, AMap: any, position: any, name: string, name_obj: stri
     ]
     const content = [
         contact,
-        `联系方式：${phone ? phone : '暂无'}`,
+        `联系方式：${phone ? phone : '暂无'}<br/><a href='http://localhost:5173/detial'>详细信息</a>`,
     ]
 
     const infoWindow = createInfoWindow(

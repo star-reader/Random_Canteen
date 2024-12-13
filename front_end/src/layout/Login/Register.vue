@@ -21,13 +21,13 @@
                 placeholder="密码"
                 :rules="[{ required: true, message: '请填写密码' }]"
             />
-            <van-field
+            <!-- <van-field
                 v-model="inviteCode"
                 name="inviteCode"
                 label="邀请码"
                 placeholder="系统内测中，请填写邀请码"
                 :rules="[{ required: true, message: '请填写邀请码' }]"
-            />
+            /> -->
             <van-field v-model="code" center clearable label="验证码" placeholder="">
                 <template #button>
                     <Verification :identifyCode="realCode" @click="refreshCode"></Verification>

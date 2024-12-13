@@ -6,6 +6,7 @@ import MyView from '@/views/MyView.vue'
 import Diary from '@/components/My/diary.vue'
 import Login from '@/layout/Login/Login.vue'
 import Register from '@/layout/Login/Register.vue'
+import Detail from '@/views/AboutView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -68,6 +69,14 @@ const router = createRouter({
       component: Register,
       meta: {
         'KeepAlive': false
+      }
+    },
+    {
+      name: 'Detail',
+      path: '/detail',
+      component: Detail,
+      meta: {
+        'KeepAlive': true
       }
     }
   ]
